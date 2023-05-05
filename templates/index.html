@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/foo.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .inline {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row" style="margin-top: 20px;">
+        <div class style="position:absolute;left:15%">
+            <div id="about" class="btn waves-effect waves-light orange" onclick="about()">说明</div>
+        </div>
+        {% if not current_user.is_authenticated %}
+        <div class="" style="position:absolute;right:15%">
+            <div id="login" class="btn waves-effect waves-light orange" onclick="login()">登录</div>
+            <div id="signup" class="btn waves-effect waves-light orange" onclick="signup()">注册</div>
+        </div>
+        {% endif %}
+        {% if current_user.is_authenticated %}
+        <div class style="position:absolute;right:15%" id="logged">
+            <div id="info" class="orange-text inline" style="font-size:200%">{{info}}</div>
+            <div id="logout" class="btn waves-effect waves-light orange" onclick="logout()">登出</div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="container" id="main">
+
+        <h1 class="center-align">
+            <img alt="a cup of java" width="80px" height="80px"
+                src="{{ url_for('static', filename='images/icon.svg') }}" title="a cup of java">
+            DPO在线评测
+        </h1>
+
+        <div id="panel1">
+            <div class="file-field input-field ">
+                <div class="btn waves-effect waves-light orange">
+                    <span>上传文件</span>
+                    <input type="file" id="jarFile" name="file" />
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" id="filePath" type="text" placeholder="请选择上传文件(.jar)">
+                </div>
+            </div>
+            <div class="inline" style="font-size: 200%;">args:</div>
+            <div class="input-field inline" style="width:25%;left:3%" id="amountInput">
+
+                <input class="validate inline" id="amount" type="text" list="amountList" placeholder="每组数据输入行数"
+                    value="20(标准)" />
+                <datalist id="amountList">
+                    <option>10(简单)</option>
+                    <option>20(标准)</option>
+                    <option>50(普通)</option>
+                    <option>100(稍难)</option>
+                    <option>1000(困难)</option>
+                    <option>10000(地狱)</option>
+                </datalist>
+            </div>
+            <div class="center-align">
+                <button class="btn waves-effect waves-light orange" id="submitBtn" type="button"
+                    style="width:100px;">提交</button>
+            </div>
+        </div>
+        {% if current_user.is_authenticated %}
+        <div id="panel2">
+            <div style="margin-top: 20px; display:none;" id="canStart">
+                <button class="btn waves-effect waves-light orange" id="startBtn" type="button">开始评测</button>
+            </div>
+            <div style="margin-top: 20px; display:none;" id="canUpdate">
+                <button class="btn waves-effect waves-light orange" id="updateBtn" type="button">查看评测结果</button>
+                <div class="intro">
+                    <p class="intro" id="result" type="text"></p>
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: none;" id="canDownload">
+                <button class="btn waves-effect waves-light orange" id="downloadBtn" type="button" style>下载错误信息</button>
+                <div id="downloadCallback" class="inline">&nbsp;</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <!-- <div id="user" class="{{username}}"></div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    {% if current_user.is_uploaded %}
+    <script>
+        var isuploaded = 1;
+        $("#filePath")[0].placeholder = "您已上传文件，重新上传会覆盖原文件";
+        $("#canStart")[0].style.display = "block";
+    </script>
+    {% endif %}
+    {% if current_user.is_started %}
+    <script>
+        var is_started = 1;
+        $("#canUpdate")[0].style.display = "block";
+
+    </script>
+    {% endif %}
+    {% if current_user.is_wrong %}
+    <script>
+        $("#canDownload")[0].style.display = "block";
+    </script>
+    {% endif %}
+    <script src="../static/index.js"></script>
+</body>
+
+</html>

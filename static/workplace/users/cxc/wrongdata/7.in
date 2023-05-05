@@ -1,0 +1,1000 @@
+qsv 2
+atg 5 0
+qsv 0
+atg 4 1
+ap 1 0 0
+qcs
+ap 4 0 0
+ag 0
+qts
+ar 3 3 64
+ap 5 0 0
+qba 3
+qci 2 1
+atg 3 0
+qgvs 3
+ap 2 0 0
+qbs
+qci 1 1
+qcs
+ap 0 0 0
+am 4 874 0 1 1
+am 3 837 0 3 5
+atg 3 1
+dfg 3 4
+qgav 1
+qci 2 4
+qgav 1
+ap 5 0 0
+ap 2 0 0
+qgav 0
+mr 1 5 -71
+ap 5 0 0
+qci 3 2
+qts
+qbs
+mr 2 4 81
+dfg 2 1
+qba 3
+qgvs 1
+atg 1 1
+qcs
+qrm 5
+ag 4
+ag 1
+ar 4 5 92
+mr 4 0 71
+qcs
+atg 2 3
+qba 0
+dfg 1 5
+qgvs 4
+qsv 4
+qcs
+am 4 -610 0 1 4
+ag 1
+sm 1
+ag 2
+qrm 0
+qts
+dfg 0 1
+qcs
+ar 1 1 12
+qv 5 1
+sm 3
+qrm 0
+ap 0 0 0
+ar 2 1 37
+ar 2 5 85
+ar 5 4 8
+qbs
+qbs
+am 5 -57 1 0 3
+qts
+am 3 -133 0 0 3
+am 4 698 1 2 2
+qv 5 5
+qrm 4
+qv 5 3
+qsv 2
+qci 3 0
+ag 1
+dfg 5 3
+qv 4 2
+ag 0
+qgav 2
+qcs
+am 2 672 1 5 3
+qts
+qts
+ar 1 3 22
+qci 4 5
+mr 4 2 15
+qsv 0
+qgvs 3
+ar 4 2 3
+qv 0 3
+qgav 4
+sm 1
+qcs
+qcs
+qgvs 3
+sm 1
+qcs
+qci 2 1
+qv 3 5
+ag 5
+qcs
+sm 0
+qts
+qbs
+dfg 5 3
+qci 4 1
+qci 5 4
+qv 3 3
+qsv 4
+ag 1
+qv 5 4
+sm 2
+sm 4
+qcs
+qts
+ap 3 0 0
+qba 1
+dfg 3 1
+sm 4
+mr 2 1 24
+am 5 878 0 2 4
+qrm 1
+ag 0
+ap 0 0 0
+am 1 -809 1 2 0
+qgvs 3
+am 2 253 1 4 5
+mr 4 3 -13
+qts
+qrm 2
+ag 5
+qsv 0
+mr 4 0 -12
+qba 5
+dfg 0 0
+qgvs 1
+ag 2
+qsv 4
+ar 0 2 27
+ar 2 0 78
+qci 5 2
+dfg 1 3
+qv 3 4
+ag 2
+ag 1
+qrm 0
+atg 1 4
+qv 3 1
+qci 3 1
+qgav 5
+qci 1 4
+sm 3
+qgav 0
+qrm 5
+mr 0 3 62
+sm 1
+qba 1
+qrm 2
+sm 1
+qgvs 5
+qbs
+mr 3 2 61
+qsv 4
+ap 1 0 0
+ap 4 0 0
+ap 3 0 0
+sm 4
+qts
+qgvs 5
+ap 3 0 0
+ap 3 0 0
+ar 0 4 4
+qsv 2
+ag 4
+mr 1 3 -26
+qba 1
+ap 5 0 0
+qcs
+qv 1 0
+qsv 2
+qrm 5
+atg 4 0
+qcs
+qci 4 4
+qci 1 5
+atg 4 2
+atg 3 4
+qcs
+qts
+ap 2 0 0
+qcs
+qbs
+am 0 -687 1 0 2
+qcs
+qts
+qgav 2
+qrm 4
+qrm 0
+ar 4 1 60
+qgav 4
+am 0 159 0 1 4
+qbs
+qba 0
+qbs
+qts
+qgvs 5
+qgav 1
+qgav 1
+ag 3
+qgav 3
+mr 5 2 12
+qba 1
+qgav 5
+ag 1
+qrm 5
+ag 3
+atg 1 2
+qv 5 5
+qv 3 1
+qv 2 3
+qbs
+qgvs 4
+qrm 5
+qv 1 1
+qsv 5
+qba 3
+ag 0
+qgvs 3
+atg 4 2
+atg 3 0
+qsv 2
+sm 5
+ar 3 4 56
+qrm 5
+sm 0
+qrm 4
+am 1 223 0 1 1
+qrm 1
+dfg 0 0
+sm 5
+qba 4
+ag 3
+am 5 663 1 1 5
+qsv 3
+qts
+qgav 2
+mr 1 0 -13
+ar 0 0 8
+ag 2
+ar 4 0 3
+qrm 0
+qv 1 4
+qts
+qci 4 2
+atg 4 4
+ag 5
+qbs
+qrm 3
+qba 0
+qgav 0
+ar 0 4 45
+ap 3 0 0
+qcs
+ag 3
+mr 4 2 -76
+ar 1 3 50
+qsv 0
+ag 4
+ag 5
+qrm 2
+qv 1 2
+qsv 3
+qgvs 1
+ap 4 0 0
+qsv 2
+ap 5 0 0
+ar 0 5 84
+qrm 4
+qci 1 3
+qcs
+dfg 1 0
+ap 4 0 0
+qv 5 2
+sm 2
+sm 3
+ap 0 0 0
+qgvs 2
+qba 2
+ap 5 0 0
+ar 2 0 30
+sm 0
+sm 4
+mr 5 5 -60
+qgav 2
+sm 3
+dfg 2 4
+ar 1 2 66
+qsv 0
+qgvs 3
+sm 1
+qts
+am 3 -626 1 1 5
+ag 1
+sm 2
+atg 1 1
+qsv 4
+qgvs 2
+qci 4 4
+qv 2 0
+qgvs 4
+qci 4 2
+qgav 3
+ag 1
+mr 5 0 -55
+qts
+qts
+am 4 418 1 3 3
+ar 1 4 73
+qba 1
+am 4 375 0 5 1
+ap 3 0 0
+qgav 5
+qsv 5
+qts
+ar 3 1 78
+qbs
+dfg 0 0
+qrm 4
+sm 4
+dfg 3 2
+sm 2
+qba 1
+sm 0
+qts
+qbs
+dfg 0 4
+dfg 4 3
+ag 3
+mr 5 4 -38
+qv 1 4
+qsv 4
+qts
+dfg 3 5
+sm 4
+mr 4 5 -31
+mr 3 1 -36
+qgav 1
+qv 4 0
+qrm 2
+atg 0 3
+ar 5 5 87
+mr 0 4 98
+sm 2
+qci 0 4
+mr 3 4 86
+qcs
+qrm 4
+ar 4 5 100
+qci 3 0
+qba 0
+qba 2
+ap 0 0 0
+qgvs 2
+am 3 -798 1 5 3
+ar 5 0 86
+qba 3
+qba 2
+qgav 5
+qba 2
+am 0 -208 0 4 3
+qci 5 3
+qcs
+qbs
+qbs
+qts
+ar 5 1 15
+qgav 5
+qgvs 5
+ag 2
+dfg 5 1
+mr 4 4 55
+sm 5
+qbs
+qba 4
+dfg 5 3
+ag 1
+qba 4
+ar 4 3 15
+qbs
+sm 4
+qrm 1
+qts
+mr 2 5 53
+mr 5 2 56
+qrm 2
+am 0 -34 1 2 4
+qci 3 0
+ap 1 0 0
+ag 4
+qsv 4
+qcs
+qv 5 0
+dfg 1 5
+qv 5 3
+qbs
+qv 3 5
+qgvs 1
+qts
+qbs
+atg 5 3
+qgvs 2
+sm 0
+qrm 3
+sm 5
+qba 4
+qts
+atg 3 4
+qts
+sm 2
+qgvs 1
+qgvs 5
+qrm 4
+qts
+ap 0 0 0
+qgav 1
+dfg 2 0
+qrm 0
+qci 0 1
+atg 3 5
+qba 5
+qci 1 2
+qsv 2
+ag 2
+qcs
+qcs
+atg 1 2
+am 5 -112 0 3 1
+qgvs 3
+ar 0 5 19
+qsv 2
+qsv 3
+atg 5 3
+sm 2
+qba 2
+ag 3
+qgvs 4
+ar 4 4 48
+qgav 3
+qsv 5
+am 3 122 1 2 3
+qsv 1
+qgav 1
+sm 4
+qv 5 4
+ag 2
+ag 2
+qts
+qsv 3
+am 1 -785 0 4 2
+qbs
+qci 0 3
+ag 1
+qgvs 4
+mr 5 1 5
+qgvs 0
+qrm 5
+ag 2
+qba 4
+qci 1 0
+sm 2
+qrm 4
+qbs
+mr 1 5 -84
+qbs
+qbs
+atg 4 2
+qsv 0
+qts
+ap 4 0 0
+qgav 3
+qv 3 5
+qv 2 4
+qsv 4
+ag 2
+qv 4 2
+mr 3 0 -4
+qgav 3
+qsv 3
+ar 5 5 85
+qci 2 5
+dfg 3 1
+qci 0 2
+qrm 1
+ag 5
+ap 0 0 0
+dfg 1 4
+qba 4
+qgav 1
+qrm 1
+qrm 4
+dfg 5 1
+ag 5
+qba 1
+am 0 51 0 2 3
+qsv 5
+atg 0 3
+qcs
+ap 1 0 0
+ap 5 0 0
+qts
+qba 4
+dfg 1 5
+mr 4 2 -78
+qv 5 0
+qts
+qsv 5
+sm 4
+qcs
+atg 3 1
+ar 0 2 43
+qrm 5
+dfg 3 1
+qv 3 5
+qbs
+ar 4 2 15
+qsv 0
+dfg 5 2
+ar 4 2 21
+am 4 -932 0 5 5
+ag 3
+dfg 2 3
+qbs
+qci 1 2
+qci 4 2
+qgvs 3
+ag 4
+qrm 4
+qts
+qgav 2
+atg 0 4
+atg 2 4
+qbs
+qv 2 3
+qgvs 4
+qgav 0
+ap 3 0 0
+mr 0 4 -48
+qrm 5
+qsv 1
+mr 3 3 13
+ap 2 0 0
+qci 5 1
+qba 2
+qsv 3
+ar 2 2 21
+am 1 478 1 0 5
+qci 1 5
+qbs
+ap 3 0 0
+ap 2 0 0
+qv 2 1
+qsv 0
+mr 4 2 -66
+mr 5 5 -27
+qci 2 1
+qts
+qgav 1
+qgav 1
+am 1 -478 0 3 0
+dfg 0 2
+am 5 394 0 5 4
+qv 1 1
+dfg 0 1
+ar 4 5 65
+qcs
+qsv 2
+ap 1 0 0
+qgvs 2
+dfg 5 2
+ar 3 1 25
+qsv 5
+qsv 0
+mr 0 4 -89
+qts
+qrm 0
+atg 0 2
+ag 5
+qbs
+qbs
+qrm 0
+ar 4 5 8
+atg 1 4
+qv 1 1
+qv 4 4
+mr 0 4 -50
+qgvs 3
+ar 0 4 96
+ag 0
+sm 0
+qsv 3
+qgvs 3
+qts
+qcs
+am 5 276 0 5 3
+qgvs 1
+qcs
+mr 1 0 -51
+mr 3 0 65
+mr 1 0 86
+qbs
+dfg 3 1
+ap 0 0 0
+qba 0
+ar 2 2 16
+qcs
+mr 2 1 -42
+qts
+qgvs 5
+ap 4 0 0
+qv 0 1
+am 4 -898 0 0 2
+ar 3 4 6
+mr 2 4 93
+qts
+atg 4 1
+atg 2 0
+sm 1
+qcs
+qrm 3
+qba 0
+qcs
+am 1 -651 0 0 1
+sm 4
+ap 5 0 0
+qgvs 2
+qba 5
+qrm 4
+qci 1 2
+ar 3 4 55
+am 3 859 1 5 4
+qts
+qba 4
+qba 1
+ap 1 0 0
+qbs
+atg 3 1
+dfg 0 4
+qcs
+ag 1
+ag 4
+qbs
+qba 4
+qba 5
+mr 3 4 85
+qgvs 3
+mr 0 4 -77
+ag 5
+qgvs 4
+atg 3 2
+ap 4 0 0
+am 3 375 0 4 0
+atg 3 3
+atg 5 1
+qrm 1
+qgvs 2
+ag 3
+qba 5
+ap 5 0 0
+ar 4 3 92
+qcs
+qgav 0
+atg 2 2
+ap 0 0 0
+qba 4
+ap 4 0 0
+qrm 3
+qcs
+atg 2 4
+qgav 3
+qgvs 4
+ag 5
+qci 0 1
+ag 2
+ag 2
+qba 4
+qba 5
+qci 5 2
+qrm 5
+mr 2 3 -12
+am 0 258 0 2 0
+qv 0 5
+qba 1
+qba 0
+mr 5 2 57
+qts
+mr 2 1 73
+ap 5 0 0
+qba 1
+ar 3 4 31
+ag 0
+sm 3
+qgvs 0
+qrm 1
+dfg 5 4
+qgav 2
+atg 5 1
+qcs
+dfg 1 1
+qba 4
+qcs
+qcs
+qts
+qgav 1
+mr 3 2 47
+ar 4 2 88
+am 3 -257 1 2 5
+qgvs 2
+ag 1
+qrm 3
+ap 4 0 0
+atg 2 5
+ar 0 5 55
+dfg 5 3
+qgav 1
+qci 4 2
+qv 0 5
+ag 5
+qgvs 2
+qgav 1
+qcs
+qsv 2
+mr 2 2 83
+ar 0 2 44
+atg 1 1
+ar 4 5 9
+qgvs 5
+am 4 198 0 5 1
+qba 4
+sm 0
+am 3 267 1 5 5
+qcs
+qci 0 0
+mr 1 5 -78
+qcs
+qts
+qcs
+qgav 4
+qba 2
+qba 0
+qba 0
+dfg 1 1
+am 2 -209 1 4 5
+ar 4 3 85
+ap 1 0 0
+atg 1 0
+qgvs 4
+qci 3 5
+qba 3
+qts
+qgav 0
+qba 3
+am 2 -273 0 4 0
+atg 1 5
+qv 3 4
+am 4 74 1 5 2
+mr 3 0 82
+qcs
+qv 0 0
+qba 1
+qsv 4
+qbs
+dfg 2 3
+qba 4
+atg 0 1
+qrm 3
+mr 2 3 41
+ap 3 0 0
+sm 5
+qci 2 3
+atg 3 0
+qba 4
+qrm 1
+dfg 0 5
+qts
+ar 0 2 17
+dfg 2 5
+ag 5
+mr 2 1 72
+ar 1 2 66
+atg 5 5
+qgvs 0
+qcs
+qci 0 4
+qsv 4
+qts
+mr 5 5 -29
+am 3 55 0 0 4
+qsv 1
+dfg 3 5
+sm 4
+qba 4
+atg 4 1
+mr 5 3 -48
+qci 0 3
+qcs
+qci 0 2
+qgav 3
+qgvs 4
+qsv 5
+am 1 815 1 2 1
+qgvs 5
+ag 1
+qsv 3
+qbs
+qgvs 0
+dfg 1 1
+qbs
+atg 0 4
+qgav 3
+ap 2 0 0
+qgav 1
+qba 3
+qba 3
+am 3 541 0 3 0
+ar 1 0 44
+qsv 2
+qgav 1
+qci 2 3
+ag 4
+qcs
+qci 0 3
+qv 2 0
+qv 2 4
+ag 5
+qv 2 4
+mr 0 5 10
+ag 4
+qgvs 2
+mr 5 0 69
+qgvs 4
+ap 5 0 0
+qba 1
+qv 3 3
+qv 2 4
+qgvs 2
+ag 1
+qcs
+qts
+qcs
+mr 2 1 70
+qts
+ar 0 4 35
+ar 5 1 25
+ar 3 5 50
+qba 4
+ap 1 0 0
+qts
+qv 1 4
+ar 3 4 24
+qgvs 3
+am 3 956 0 1 0
+qts
+dfg 4 5
+qci 0 2
+qgav 5
+qba 0
+qsv 4
+sm 0
+qgvs 0
+qsv 0
+sm 5
+dfg 1 5
+qv 1 0
+am 3 110 0 3 5
+ap 2 0 0
+qci 0 5
+qci 5 5
+qbs
+qbs
+qrm 4
+ar 1 5 4
+ar 3 1 85
+am 4 419 1 2 2
+qgav 0
+qsv 3
+qgvs 3
+qcs
+mr 0 5 62
+ap 0 0 0
+qts
+qcs
+qbs
+qci 5 1
+qba 5
+dfg 2 3
+qcs
+qts
+atg 0 3
+ar 4 2 100
+atg 2 0
+qci 1 1
+ap 4 0 0
+qcs
+qts
+sm 1
+ar 4 3 1
+qbs
+qgvs 1
+qgvs 2
+sm 0
+qba 1
+am 3 -76 1 0 4
+qgvs 2
+qrm 1
+qv 2 1
+qbs
+qba 2
+qv 5 1
+ar 4 0 20
+qv 3 3
+qcs
+qts
+am 5 901 0 5 3
+dfg 3 2
+qsv 2
+qrm 2
+qgvs 2
+qrm 5
+mr 1 4 35
+sm 2
+qba 5
+qrm 3
+ar 3 4 51
+mr 4 5 9
+ap 1 0 0
+ar 4 2 79
+qgav 0
+am 4 -999 0 2 5
+qcs
+sm 4
+dfg 3 0
+ap 0 0 0
+sm 3
+dfg 1 3
+qcs
+qgav 2
+am 4 -500 1 4 1
+qts
+ag 0
+ap 2 0 0
+mr 1 2 80
+atg 5 4
+qgav 0
+qts
+qgav 3
+qgav 0
+qgav 3
+qv 3 0
+ag 1
+qts
+qts
+qcs
+ar 4 1 89
+ap 0 0 0
+am 0 -958 1 5 4
+qv 3 2
+qgvs 4
+ap 4 0 0
+atg 4 4
+mr 4 0 -73
+qts
+qv 1 0
+qgvs 0
+qrm 4
+qrm 2
+qrm 3
+qrm 3
+qts
+atg 5 2
+ap 1 0 0
+ag 0
+qbs
+atg 0 2
+ag 2
+qgvs 4
+qts
+qsv 1
+ag 4
+qts
+qrm 2
+ap 4 0 0
+atg 0 3
+qv 0 3
+dfg 4 3

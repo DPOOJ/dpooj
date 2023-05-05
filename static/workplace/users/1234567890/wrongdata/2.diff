@@ -1,0 +1,115 @@
+0a1,2
+> pinf-1, 3-1
+> minf-1, 6-1
+1a4
+> pinf-2, 6-1
+2a6,10
+> 0
+> ginf-1, 0-1
+> Group does not exist
+> pinf-3, 8-1
+> pinf-4, 5-1
+4c12
+< pinf-1, 8-1
+---
+> pinf-5, 8-2
+6c14,17
+< pinf-2, 1-1
+---
+> anf-1, 0-1
+> pinf-6, 4-1
+> ginf-2, 1-1
+> pinf-7, 1-1
+8a20,21
+> anf-2, 0-2
+> anf-3, 0-3
+9a23
+> The person with this number does not exist
+11d24
+< pinf-3, 3-1
+13,14c26,33
+< pinf-4, 6-1
+< pinf-5, 8-2
+---
+> egi-1, 2-1
+> Ok
+> Group does not exist
+> 0
+> pinf-8, 3-2
+> pinf-9, 3-3
+> 0
+> ginf-3, 3-1
+15a35,39
+> 0
+> pinf-10, 6-2
+> minf-2, 2-1
+> pinf-11, 3-4
+> pinf-12, 8-3
+17c41,46
+< pinf-6, 8-3
+---
+> ginf-4, 1-2
+> minf-3, 1-1
+> ginf-5, 8-1
+> ginf-6, 0-2
+> pinf-13, 7-1
+> minf-4, 7-1
+18a48,60
+> minf-5, 6-2
+> The person with this number does not exist
+> pinf-14, 6-3
+> ginf-7, 4-1
+> pinf-15, 1-2
+> Ok
+> 0
+> ginf-8, 7-1
+> pinf-16, 8-4
+> 0
+> pinf-17, 7-2
+> ginf-9, 4-2
+> anf-4, 2-1
+19a62,63
+> Ok
+> ginf-10, 8-2
+21c65,67
+< pinf-7, 8-4
+---
+> None
+> pinf-18, 8-5
+> ginf-11, 7-2
+22a69,71
+> Ok
+> 0
+> minf-6, 8-1
+25,26d73
+< 0
+< pinf-8, 7-1
+27a75,98
+> The person with this number does not exist
+> pinf-19, 8-6
+> ginf-12, 4-3
+> 0
+> pinf-20, 7-3
+> pinf-21, 7-4
+> None
+> pinf-22, 7-5
+> Group does not exist
+> minf-7, 6-3
+> pinf-23, 6-4
+> 0
+> rnf-2, 1-1, 2-1
+> anf-5, 2-2
+> 0
+> anf-6, 5-1
+> 0
+> ginf-13, 1-3
+> ginf-14, 6-1
+> pinf-24, 7-6
+> ginf-15, 0-3
+> Ok
+> ginf-16, 1-4
+> pinf-25, 6-5
+29c100
+< rnf-2, 1-1, 4-2
+---
+> rnf-3, 1-2, 4-2

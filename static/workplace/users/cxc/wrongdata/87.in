@@ -1,0 +1,1000 @@
+ag 2
+qv 2 0
+qbs
+qcs
+ag 1
+mr 1 1 -22
+qrm 0
+mr 0 2 -30
+sm 0
+qts
+qci 1 2
+ag 0
+qci 0 2
+qv 2 2
+atg 1 1
+am 2 832 0 2 0
+qbs
+qgvs 2
+mr 2 0 -41
+ag 1
+qci 1 0
+ar 0 1 11
+ap 1 0 0
+qv 0 1
+qv 0 2
+mr 1 2 80
+qba 2
+ag 0
+atg 1 0
+ar 2 1 61
+qgvs 0
+qcs
+dfg 1 1
+qgav 0
+mr 1 2 15
+am 0 715 1 1 2
+qcs
+sm 0
+ag 1
+qci 1 0
+ap 2 0 0
+qsv 0
+am 1 981 0 0 2
+mr 2 1 -23
+qv 2 0
+qbs
+dfg 2 2
+dfg 2 0
+mr 0 0 -10
+sm 0
+qv 0 1
+qbs
+am 1 -200 1 1 1
+am 2 -591 0 2 0
+qgvs 1
+ar 1 2 31
+qbs
+qbs
+mr 2 0 87
+qv 2 2
+ar 2 0 3
+dfg 2 0
+qsv 2
+dfg 2 0
+qsv 2
+qts
+qsv 2
+am 0 -9 0 1 0
+ag 2
+ap 2 0 0
+sm 1
+dfg 2 2
+qba 0
+sm 0
+ar 0 1 2
+qcs
+qsv 1
+atg 1 0
+qcs
+qsv 1
+ag 0
+qgvs 1
+qsv 0
+qv 1 0
+qci 2 1
+am 0 769 1 1 2
+sm 1
+qts
+qgvs 1
+qts
+sm 0
+qrm 0
+am 0 662 0 2 0
+qci 0 0
+qgav 0
+qts
+qv 0 0
+qgvs 1
+ag 1
+dfg 2 2
+qbs
+atg 0 0
+dfg 0 2
+qgav 1
+am 1 -442 1 0 0
+qba 2
+qba 1
+qci 0 0
+qcs
+dfg 2 2
+ap 2 0 0
+ap 0 0 0
+ap 2 0 0
+qci 1 0
+qsv 1
+sm 2
+qts
+qcs
+qgvs 0
+am 0 -197 1 2 1
+qts
+qbs
+qgav 0
+atg 0 0
+qsv 2
+qrm 2
+am 2 -103 0 0 2
+qci 1 0
+qv 2 0
+qts
+am 0 761 1 1 0
+qgav 0
+mr 1 2 1
+ap 1 0 0
+qbs
+qts
+ar 1 2 45
+qsv 2
+qgav 0
+ar 0 2 34
+qcs
+qcs
+qgav 0
+qv 1 0
+qcs
+qcs
+am 0 -542 1 1 1
+qgvs 2
+am 1 651 0 1 0
+mr 1 1 -15
+qv 1 0
+ag 2
+ar 0 2 18
+qbs
+qci 0 0
+qgav 1
+mr 1 1 96
+mr 0 0 49
+ag 2
+atg 1 1
+atg 0 2
+am 1 -718 0 2 0
+am 0 -57 0 2 0
+qbs
+qts
+qgvs 1
+qv 0 0
+qba 0
+atg 0 0
+dfg 2 1
+qts
+mr 1 0 41
+sm 1
+qgvs 0
+qgvs 0
+ap 0 0 0
+qba 2
+qts
+qv 0 0
+qbs
+ag 2
+qgvs 0
+qts
+qbs
+ap 1 0 0
+atg 0 1
+qcs
+qts
+qba 1
+qsv 1
+qgvs 2
+qrm 2
+dfg 0 1
+qgav 0
+ar 1 2 83
+dfg 0 2
+dfg 0 1
+qci 0 2
+dfg 1 0
+ar 1 0 23
+qgvs 2
+qcs
+am 0 588 0 2 0
+qci 1 0
+qci 0 1
+sm 0
+qv 2 0
+dfg 1 0
+mr 0 0 44
+qgav 0
+ar 1 0 72
+qba 0
+qci 2 0
+qv 2 0
+atg 2 2
+qba 1
+qsv 0
+qbs
+mr 2 0 29
+qcs
+mr 0 2 -85
+ag 1
+qgav 2
+qba 2
+am 1 -953 1 2 2
+qbs
+qgvs 2
+qbs
+ag 2
+sm 1
+qsv 1
+ar 2 2 57
+ar 0 0 94
+qrm 1
+ar 2 2 100
+mr 2 2 -59
+qsv 0
+qrm 1
+qba 0
+qci 2 1
+ag 1
+ar 2 1 93
+sm 0
+qba 1
+qba 0
+qv 0 1
+qcs
+am 1 -196 1 1 2
+qci 2 2
+ap 0 0 0
+qcs
+qcs
+dfg 2 0
+atg 1 0
+dfg 2 0
+qcs
+am 1 382 1 0 2
+qbs
+qv 2 0
+qba 0
+ag 2
+qba 0
+ag 1
+qsv 2
+qba 1
+am 1 -400 1 0 0
+qci 2 1
+sm 2
+ag 1
+atg 0 1
+qbs
+qci 2 2
+am 2 612 0 1 2
+qba 1
+qrm 2
+dfg 0 1
+qgvs 1
+ap 2 0 0
+ag 2
+ag 2
+dfg 1 1
+qsv 1
+qv 2 0
+qrm 0
+qrm 0
+qgav 2
+atg 1 2
+atg 0 1
+qts
+qsv 2
+atg 2 1
+atg 0 0
+sm 0
+ap 0 0 0
+qts
+qsv 2
+sm 1
+qgvs 1
+qsv 2
+mr 0 2 39
+ap 2 0 0
+qbs
+qrm 0
+qts
+mr 1 0 79
+qba 1
+qts
+ag 0
+ap 2 0 0
+qts
+qbs
+ap 2 0 0
+qcs
+dfg 2 1
+ar 2 2 80
+ar 0 2 17
+qba 1
+qts
+ar 0 2 4
+qrm 1
+ap 0 0 0
+ar 1 1 57
+sm 2
+mr 2 2 39
+am 0 91 0 1 0
+qv 2 2
+qgav 1
+qsv 0
+qgav 2
+sm 2
+ap 2 0 0
+ar 2 1 37
+mr 1 2 2
+qv 0 2
+qba 0
+dfg 0 1
+qts
+mr 2 0 -5
+qts
+am 0 953 0 0 0
+qts
+qts
+qci 2 1
+ap 1 0 0
+ag 0
+qsv 0
+ap 1 0 0
+qci 1 2
+qsv 0
+qsv 2
+qv 1 1
+qba 0
+qrm 1
+am 0 263 1 1 2
+qgvs 0
+qrm 0
+am 0 -800 0 2 0
+qcs
+ag 0
+qv 1 0
+qgvs 1
+qts
+qsv 2
+am 2 -971 0 0 0
+qgav 2
+qv 0 0
+qgvs 0
+am 0 -214 0 1 2
+sm 2
+qrm 0
+ar 2 0 16
+qbs
+qbs
+mr 0 1 -13
+qsv 0
+atg 0 1
+qba 2
+qci 1 1
+atg 2 2
+am 1 -232 1 0 2
+qgvs 0
+mr 1 1 -35
+qsv 0
+qba 1
+qci 0 1
+qts
+qts
+qv 1 1
+mr 1 0 76
+qts
+mr 2 2 30
+qci 2 2
+dfg 2 0
+ar 0 1 53
+qts
+qcs
+dfg 1 1
+qsv 1
+ar 2 1 94
+qts
+qci 2 0
+ar 2 1 17
+sm 1
+ar 0 0 38
+qts
+qts
+qbs
+atg 2 2
+qgav 2
+mr 2 0 -31
+qgvs 0
+atg 1 1
+ap 0 0 0
+ap 2 0 0
+qbs
+atg 1 2
+ar 0 2 29
+atg 2 1
+qbs
+qv 1 0
+qba 1
+ag 0
+qbs
+qrm 2
+qgav 0
+ag 2
+qgav 0
+ar 1 1 13
+qgvs 0
+am 1 278 0 1 2
+qts
+ap 0 0 0
+qv 0 2
+qv 0 1
+ap 1 0 0
+ap 0 0 0
+qts
+qrm 2
+sm 1
+qv 2 1
+ar 1 0 81
+sm 2
+mr 2 0 9
+atg 2 0
+am 1 -97 0 2 1
+qv 0 1
+qts
+qv 2 0
+qts
+qcs
+ag 2
+qv 0 2
+qsv 0
+qts
+dfg 2 2
+qcs
+qba 0
+mr 1 0 -77
+am 0 -459 1 1 1
+sm 2
+qci 1 1
+qv 1 1
+qsv 2
+qci 0 2
+ap 0 0 0
+qcs
+qrm 2
+mr 2 0 -40
+qsv 0
+qts
+dfg 2 0
+qba 0
+ap 1 0 0
+ag 0
+qv 0 0
+qsv 0
+mr 0 0 -38
+qrm 1
+dfg 2 0
+qgav 1
+ag 2
+sm 2
+atg 2 0
+qcs
+qba 0
+qba 2
+qgvs 2
+sm 1
+qba 1
+qgvs 0
+am 2 327 1 1 0
+qbs
+qcs
+qba 2
+qsv 2
+qgav 2
+ag 2
+qsv 0
+qci 2 0
+mr 0 0 -47
+ar 2 0 86
+atg 1 0
+sm 2
+qbs
+atg 1 0
+qba 0
+sm 2
+dfg 2 1
+am 1 -348 1 0 1
+sm 0
+qci 0 1
+atg 2 1
+ap 0 0 0
+qba 2
+ap 2 0 0
+sm 0
+qsv 0
+atg 1 0
+sm 0
+qv 0 0
+qgav 1
+qgav 2
+qba 2
+qgvs 1
+qsv 0
+qv 0 1
+ag 2
+sm 0
+qbs
+qcs
+qci 1 0
+atg 0 2
+am 1 486 1 2 2
+qsv 2
+qba 1
+ar 2 0 16
+qv 0 2
+ap 0 0 0
+atg 0 1
+qts
+mr 1 0 -2
+qgvs 2
+ag 1
+qgav 2
+ar 1 1 79
+qgvs 2
+am 0 81 1 2 0
+sm 0
+sm 0
+qcs
+dfg 1 2
+ap 1 0 0
+am 2 646 0 1 1
+qrm 1
+qgav 2
+qgvs 1
+qba 1
+qcs
+atg 1 0
+qgvs 1
+ap 2 0 0
+atg 1 1
+qcs
+am 2 620 0 2 1
+qcs
+qv 0 0
+qci 0 1
+ar 1 1 73
+qv 1 0
+qv 1 2
+atg 0 1
+qci 1 0
+qba 0
+qgvs 1
+qrm 0
+atg 1 0
+am 1 -964 1 2 2
+qts
+qgvs 2
+am 2 768 1 0 0
+ag 0
+qci 1 2
+ag 1
+qsv 0
+sm 0
+sm 0
+ar 1 2 27
+atg 2 2
+qv 0 0
+qcs
+qba 1
+am 0 -106 0 1 1
+qbs
+atg 2 2
+qcs
+dfg 1 0
+ar 2 1 13
+qgav 1
+qbs
+qv 0 2
+ag 2
+qgav 2
+qgav 0
+qbs
+dfg 0 1
+sm 0
+qv 0 1
+qcs
+qrm 1
+ap 1 0 0
+dfg 1 0
+mr 1 2 85
+qba 1
+ap 2 0 0
+ar 1 1 2
+qsv 2
+qv 0 1
+qsv 1
+ap 2 0 0
+qgvs 1
+qv 2 2
+qba 2
+am 0 994 0 1 1
+ag 2
+am 1 745 1 1 2
+qrm 1
+qba 2
+qv 1 2
+qv 0 1
+qsv 2
+mr 2 1 80
+qgav 1
+qsv 0
+qgav 1
+atg 2 1
+dfg 2 0
+qba 0
+ar 1 2 3
+ag 1
+ar 1 0 92
+qsv 0
+qgav 0
+ap 0 0 0
+qv 2 1
+qgvs 2
+qgvs 1
+qbs
+qbs
+qci 2 0
+qci 2 2
+ap 1 0 0
+qgav 1
+qba 1
+ar 0 2 93
+mr 0 2 -9
+qbs
+mr 1 2 99
+qcs
+qv 0 2
+sm 1
+qgvs 1
+atg 1 2
+qrm 1
+ap 2 0 0
+am 2 399 0 1 2
+am 1 224 0 0 2
+qrm 1
+qsv 2
+qba 2
+qbs
+atg 1 1
+ar 0 1 26
+qrm 1
+ar 0 2 25
+ar 0 0 97
+qba 2
+qv 2 1
+sm 0
+sm 1
+qts
+qgvs 0
+qgav 0
+sm 2
+qgvs 1
+mr 1 2 88
+ar 2 0 46
+qrm 1
+qbs
+atg 2 1
+qts
+mr 2 1 19
+sm 0
+ap 1 0 0
+qsv 0
+qsv 0
+mr 2 0 14
+dfg 0 0
+qts
+qgav 2
+mr 2 0 -89
+ar 1 2 91
+qsv 0
+qbs
+qgav 1
+qci 2 2
+qts
+qts
+qba 0
+ar 0 2 48
+atg 0 0
+am 0 -138 1 2 1
+ag 2
+ap 2 0 0
+mr 0 0 56
+qts
+sm 2
+am 1 806 0 0 2
+mr 0 2 79
+qsv 0
+dfg 2 0
+qv 1 0
+qts
+qts
+qbs
+qcs
+qgvs 2
+ap 0 0 0
+mr 0 2 38
+ap 2 0 0
+qbs
+qgvs 2
+qrm 0
+ap 0 0 0
+qts
+qba 2
+ag 0
+qci 1 0
+dfg 2 1
+qba 1
+qcs
+am 0 -995 0 2 2
+qgvs 1
+atg 0 0
+qrm 0
+ag 0
+qba 2
+mr 1 0 36
+ar 1 1 76
+mr 0 1 74
+qgav 1
+sm 0
+ag 1
+ag 2
+qgav 2
+qgav 2
+qbs
+qgav 2
+dfg 2 0
+ap 0 0 0
+qba 1
+qcs
+qrm 2
+qcs
+qsv 1
+qgvs 1
+dfg 2 1
+qsv 0
+ar 0 1 28
+qba 2
+qcs
+ap 0 0 0
+ap 0 0 0
+am 2 402 1 0 1
+qcs
+am 1 971 1 2 0
+qts
+qts
+qv 1 1
+atg 0 2
+sm 2
+qba 2
+mr 2 2 14
+qgvs 0
+qcs
+ar 1 0 4
+qgvs 1
+qts
+dfg 1 1
+qrm 1
+ap 1 0 0
+qgav 0
+qcs
+qci 0 1
+mr 0 1 54
+mr 0 0 28
+atg 0 1
+ag 2
+qsv 1
+qv 2 0
+sm 2
+atg 0 0
+qcs
+qgvs 1
+qgvs 1
+qci 2 0
+am 0 761 0 1 1
+qci 2 1
+qbs
+ap 0 0 0
+qgvs 2
+am 0 133 1 1 2
+ar 1 1 55
+atg 2 2
+qbs
+mr 2 0 -92
+qgav 1
+qbs
+qbs
+qsv 0
+atg 0 0
+mr 2 2 96
+qgav 2
+ap 0 0 0
+qgav 2
+qgav 2
+ap 1 0 0
+qcs
+qba 1
+qcs
+ag 1
+mr 1 1 19
+qci 1 2
+ar 0 1 13
+qcs
+qba 2
+ag 1
+mr 2 2 60
+qgvs 1
+qci 0 2
+ag 0
+qts
+qgav 1
+ap 1 0 0
+mr 0 0 6
+qgav 2
+ar 0 0 61
+qbs
+qsv 2
+am 1 -808 1 0 1
+qsv 0
+am 1 477 0 1 1
+qsv 1
+am 2 -205 1 1 1
+qts
+atg 0 2
+qts
+qv 2 1
+mr 1 2 8
+qsv 1
+ap 2 0 0
+ap 0 0 0
+mr 1 2 15
+dfg 0 2
+qv 1 0
+qsv 1
+qgav 1
+qci 0 1
+qts
+qv 0 0
+qba 2
+qsv 0
+qcs
+qgav 2
+qba 2
+qbs
+qgav 1
+ar 0 2 1
+ag 1
+qgvs 1
+sm 1
+qrm 2
+ar 1 0 66
+qgav 1
+am 0 -649 1 0 1
+ag 2
+qgav 2
+qv 1 2
+mr 0 0 67
+qci 0 2
+qts
+sm 2
+sm 2
+am 2 -571 1 1 2
+ag 2
+dfg 1 0
+ag 1
+qgav 0
+qci 0 1
+qgvs 1
+qgvs 0
+sm 1
+qv 1 1
+ap 1 0 0
+qsv 0
+qcs
+qts
+qsv 0
+qgav 0
+qgvs 1
+qbs
+qcs
+dfg 1 2
+am 1 -542 0 0 0
+qgvs 2
+mr 2 1 86
+qrm 2
+qv 1 1
+qbs
+qbs
+qci 2 2
+qsv 0
+atg 2 1
+ar 0 2 87
+qcs
+qci 2 1
+qba 0
+mr 2 1 35
+qsv 1
+mr 1 0 92
+qci 2 1
+qsv 2
+atg 2 1
+mr 2 2 84
+sm 2
+ap 2 0 0
+qv 2 0
+qv 0 1
+qsv 0
+atg 1 2
+qgav 1
+qcs
+qsv 1
+qba 2
+ap 0 0 0
+ar 1 0 66
+qci 0 1
+atg 0 2
+qv 0 1
+ag 1
+qgvs 1
+sm 0
+ap 2 0 0
+ar 1 2 57
+qba 2
+qrm 0
+atg 1 1
+atg 1 1
+qgvs 0
+ar 2 2 70
+qci 1 1
+ar 2 0 57
+dfg 2 0
+qci 2 0
+qgvs 2
+qv 0 1
+qsv 0
+ar 0 0 52
+ag 0
+qrm 1
+ap 0 0 0
+qgav 1
+sm 0
+qgav 0
+qba 2
+qcs
+atg 2 2
+qci 1 2
+atg 0 0
+am 2 -702 0 2 2
+qba 2
+qsv 1
+qcs
+am 1 59 1 2 2
+qgav 1
+qcs
+qgav 2
+dfg 0 1
+qci 1 0
+qsv 0
+qrm 2
+sm 2
+qba 0
+qts
+qbs
+ag 0
+ag 2
+atg 2 2
+qts
+mr 0 1 -83
+atg 0 0

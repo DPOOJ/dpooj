@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/foo.png') }}">
+    <title>登录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+
+<body class="orange">
+    <div class="container white z-depth-5"
+        style="width: 400px;height:width;margin-top:5%;padding-top:4%;padding-bottom:5%;margin-bottom:10%;border-radius: 50px;">
+        <h1 class="center-align" style="margin:auto">登录</h1>
+
+
+        <div class="input-field" style="margin-inline:50px; margin-top:10%;">
+            <input type="text" id="username" class="validate">
+            <label for="username" id="ul" class="orange-text">用户名/电子邮箱</label>
+        </div>
+
+        <div class="input-field" style="margin-inline:50px; margin-top:10%;">
+            <input type="password" id="password" class="validate">
+            <label for="password" id="pl" class=" orange-text">密码</label>
+            <div id="callbackText">&nbsp;</div>
+        </div>
+
+        <div class="center-align">
+            <button class="btn waves-effect waves-light orange" id="loginBtn" style="width:100px; margin-top:5%"
+                type="button">登录</button>
+            <button class="btn waves-effect waves-light orange" id="gotoSignupBtn" style="width:100px; margin-top:5%"
+                type="button">去注册</button>
+        </div>
+
+    </div>
+    <form action="./index" id="toindex" method="POST">
+        <input type="text" id="postname" class="validate" style="display: none;" name="data"/>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../static/login.js"></script>
+</body>
+
+</html>

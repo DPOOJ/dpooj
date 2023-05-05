@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/foo.png') }}">
+    <title>注册</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+
+<body class="orange">
+    <div class="container white z-depth-5"
+        style="width: 400px;height:width;margin-top:5%;padding-top:4%;padding-bottom:5%;margin-bottom:10%;border-radius: 50px;">
+        <h1 class="center-align" style="margin:auto">注册</h1>
+
+        <div class="input-field" style="margin-inline:50px; margin-top:6%;">
+            <input type="text" id="username" class="validate">
+            <label for="username" id="ul" class="orange-text">用户名</label>
+        </div>
+
+        <div class="input-field" style="margin-inline:50px; margin-top:6%;">
+            <input type="password" id="password" class="validate">
+            <label for="password" id="pl" class="orange-text">密码</label>
+        </div>
+        <div class="input-field" style="margin-inline:50px; margin-top:6%;">
+            <input type="password" id="agpassword" class="validate">
+            <label for="agpassword" id="pl2" class="orange-text">再次输入密码</label>
+        </div>
+
+        <div class="input-field" style="margin-inline:50px; margin-top:6%;">
+            <input type="email" id="email" name="email" class="validate">
+            <label for="email" id="el" class="orange-text">电子邮箱</label>
+        </div>
+        <div>
+            <div style="display: inline-block;">
+                <button class="btn waves-effect waves-light orange" style="margin-left: 50px;" id="send_email"
+                    type="button">发送验证码</button>
+            </div>
+
+            <div class="text-field" style="display: inline-block; margin-left:10px;">
+                <input type="text" id="code" class="validate" placeholder="6位验证码">
+
+            </div>
+            <div id="callbackText" style="margin-left: 50px;">&nbsp;</div>
+        </div>
+        <!-- <label for="code" class="orange-text" style="margin-left:170px;">6位验证码</label> -->
+        <div class="center-align">
+            <button class="btn waves-effect waves-light orange" id="submit" style="width:100px; margin-top:5%" type="button">注册</button>
+            <button class="btn waves-effect waves-light orange" id="gotoLoginBtn" style="width:100px; margin-top:5%" type="button">去登录</button>
+        </div>
+
+    </div>
+    <form action="./index" id="toindex" method="POST">
+        <input type="text" id="postname" class="validate" style="display: none;" name="data"/>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../static/signup.js"></script>
+</body>
+
+</html>
