@@ -5,8 +5,10 @@ import shutil
 from random import sample
 import json
 
+from judge import judge_1
+
 # args
-num_worker = 4
+num_workers = 2
 
 
 workplace_path = '../static/workplace'
@@ -33,6 +35,7 @@ class MyThrd(threading.Thread):
         print(f"{self.thread_id} build")
     def run(self):
         global log_count, now_count
+        print(user_path, now_count, tot_count)
         while now_count < tot_count or tot_count == -1:
             with count_lock:
                 now_count += 1
@@ -46,7 +49,7 @@ class MyThrd(threading.Thread):
             userout_path = f"{user_path}/output/{my_count}.out"
             stdout_path = f"{std_path}/output/{my_count}.out"
 
-            is_wrong = os.system(f"diff {userout_path} {stdout_path} > delete")
+            is_wrong = judge_1(userout_path, stdout_path)
             with file_lock:
                 with open(result_path, 'r') as file:
                     json_data = json.load(file)
@@ -85,5 +88,5 @@ cleanfile(result_path)
 with open(result_path, 'w') as file:
     json.dump(result_template, file)
 
-for i in range(num_worker):
+for i in range(num_workers):
     MyThrd(i).start()

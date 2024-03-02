@@ -43,7 +43,6 @@ $("#submitBtn").on('click', function () {
         fi.value = "文件不能为空！";
         return;
     }
-    
     if (uploadf&&typeof(isuploaded)=='undefined') {
         var filename = jarfile.name;
         var expname = filename.split('.');
@@ -54,8 +53,9 @@ $("#submitBtn").on('click', function () {
             uploadf = 0;
         }
     }
-    if(typeof(isuploaded)!='undefined') uploadf=0;
+    if(typeof(isuploaded)=='undefined') uploadf=0;
     var formdata = new FormData();
+
     formdata.append('havefile',uploadf);
     if(uploadf){
         formdata.append('file', jarfile);

@@ -4,6 +4,7 @@ from markupsafe import escape
 from flask import  Flask, Response, make_response, render_template, send_file, send_from_directory,url_for, flash, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from genargs import genargs_1
 from init import app, db
 from methods import send_email, generate_code, get_ipaddr
 from models import User, Validation_code,IPinfo
@@ -68,7 +69,9 @@ def uploader():
     username=current_user.username
     user_path=f"{app.config['WORKPLACE_FOLDER']}/users/{username}"
     havefile=request.form['havefile']
+
     if(havefile=="1"):
+        # print(username,"upload with file")
         f = request.files['file']
         exp=f.filename.split(".")[-1]
         if(exp!="jar" or exp==f.filename):
@@ -92,17 +95,9 @@ def uploader():
         
     amount=request.form['amount']
     runargs_path=f'{user_path}/runargs.json'
-    if(not os.path.exists(runargs_path)):
-        os.system('echo \'{"num_runs": 30, "num_instr": %d}\' > %s'%(int(amount),runargs_path))
-    else:
-        runargs=None
-        with open(runargs_path,'r',encoding='utf8') as fp:
-            runargs=json.load(fp)
-            runargs['num_instr']=int(amount)
-        with open(runargs_path,'w',encoding='utf8') as fp:
-            json.dump(runargs,fp)
+    os.system('echo \'%s\' > %s'%(genargs_1(amount), runargs_path))
 
-    print(f"{username} set num_instr to {amount}")
+    print(f"{username} update args {amount}")
     return json.loads('{"code":"0","info":"%s"}'%("上传成功！"))
     
 
@@ -238,7 +233,7 @@ def download():
 @login_required
 def update():
     username = current_user.username
-    print(username, "wants to update")
+    # print(username, "wants to update")
     json_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/result.json"
     if os.path.exists(json_path):
         with open(json_path, "r") as file:
