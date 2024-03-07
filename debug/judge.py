@@ -1,6 +1,16 @@
+from random import randint
 from sympy import expand
+import os
+import re
 
-def judge_1(userout_path, stdout_path):
+workplace_path = '../static/workplace'
+
+def strip0(expr):
+    toEval = re.sub(r'\b0+(\d+)\b', r'\1', expr)
+    return toEval
+
+
+def judge_1(input_path, userout_path, stdout_path):
     userout_file = open(userout_path)
     stdout_file = open(stdout_path)
     userout = []
@@ -9,7 +19,10 @@ def judge_1(userout_path, stdout_path):
         userout.append(line.strip())
     for line in stdout_file:
         stdout.append(line.strip())
-        
+    
+    if(len(userout)==0 or len(stdout)==0):
+        return (len(userout) != len(stdout))
+    
     if(str(userout[0]).find("(") != -1 or str(userout[0]).find(")") != -1):
         return 1
     
@@ -17,3 +30,55 @@ def judge_1(userout_path, stdout_path):
     std_simpl = expand(stdout[0])
 
     return (user_simpl != std_simpl)
+
+def judge_2(input_path, userout_path, stdout_path):
+    userout_file = open(userout_path)
+    userout = []
+    for line in userout_file:
+        userout.append(line.strip())
+
+    expanded = os.popen(f"timeout 10 java -jar {workplace_path}/std/expander.jar < {input_path}").readlines()[0].strip()
+    userans = strip0(userout[0])
+    stdans = strip0(expanded)
+    user_simpl = expand(userans)
+    std_simpl = expand(stdans)
+
+    if(len(userout)==0 or len(expanded)==0):
+        return (len(userout) != len(expanded))
+    
+    outcome = (user_simpl != std_simpl)
+    # print("case: ----------------")
+    # print(expanded)
+    # print("out: ----------------")
+    # print(user_simpl)
+    # print("vs ----------------")
+    # print(std_simpl)
+    # print(outcome,"----------------")
+    return outcome
+
+def judge_2a(input_path, userout_path, stdout_path):
+    userout_file = open(userout_path)
+    stdout_file = open(stdout_path)
+    userout = []
+    stdout = []
+    for line in userout_file:
+        userout.append(line.strip())
+    for line in stdout_file:
+        stdout.append(line.strip())
+    
+    if(len(userout)==0 or len(stdout)==0):
+        return (len(userout) != len(stdout))
+    userans = strip0(userout[0])
+    stdans = strip0(stdout[0])
+    user_simpl = expand(userans)
+    std_simpl = expand(stdans)
+
+    return (user_simpl != std_simpl)
+
+def judge(hw,*args):
+    if hw == 1:
+        return judge_1(*args)
+    if hw == 2:
+        return judge_2(*args)
+
+

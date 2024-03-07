@@ -2,3 +2,5 @@
 *.out
 *.ans
 *.diff
+static/workplace/users/*
+**__pycache__

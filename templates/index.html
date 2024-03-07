@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='images/foo.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <title>DPO OJ</title>
+    <title>DPO OJ v2</title>
     <style>
         .hide {
             display: none;
@@ -41,7 +41,7 @@
         <h1 class="center-align">
             <img alt="a cup of java" width="80px" height="80px"
                 src="{{ url_for('static', filename='images/icon.svg') }}" title="a cup of java">
-            DPO在线评测
+            DPO在线评测 v2
         </h1>
 
         <div id="panel1">
@@ -57,7 +57,7 @@
             <div class="inline" style="font-size: 200%;">args:</div>
             <div class="input-field inline" style="width:25%;left:3%" id="amountInput">
 
-                <input class="validate inline" id="amount" type="text" list="amountList" placeholder="每组数据输入行数"
+                <input class="validate inline" id="amount" type="text" list="amountList" placeholder="测试组数"
                     value="20(标准)" />
                 <datalist id="amountList">
                     <option>10(简单)</option>

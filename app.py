@@ -98,6 +98,7 @@ def uploader():
     os.system('echo \'%s\' > %s'%(genargs_1(amount), runargs_path))
 
     print(f"{username} update args {amount}")
+    current_user.is_started = 0
     return json.loads('{"code":"0","info":"%s"}'%("上传成功！"))
     
 
@@ -117,7 +118,7 @@ def send_code():
         validation_code = Validation_code()
         validation_code.last_time = 0
     
-    print(time.time() - validation_code.last_time)
+    # print(time.time() - validation_code.last_time)
     if time.time() - validation_code.last_time > 30:
         code = generate_code()
         validation_code.email = request.form['email']
@@ -238,15 +239,15 @@ def update():
     if os.path.exists(json_path):
         with open(json_path, "r") as file:
             json_data = json.load(file)
-        if json_data['wa']:
-            print(username,"got WA")
+        if json_data['wa'] or json_data['re']:
+            print(username,"got WA or RE")
             current_user.is_wrong = 1
             db.session.commit()
         else:
             current_user.is_wrong = 0
             db.session.commit()
         return json.loads('{"code":"0","info":"%s","is_wrong":"%s"}'%(
-            f"已评测{json_data['all']}组测试数据   AC: {json_data['ac']} /  WA: {json_data['wa']}",
+            f"已评测{json_data['all']}组测试数据   AC: {json_data['ac']} /  WA: {json_data['wa']} / RE: {json_data['re']}",
             current_user.is_wrong))
     else:
         return json.loads('{"code":"1","info":"%s"}'%("还未开始评测，请稍等"))
@@ -254,11 +255,14 @@ def update():
 @app.route('/start',methods=['POST'])
 @login_required
 def start():
+    # if(current_user.is_started):
+    #    return "0"
     current_user.is_started=1
     current_user.is_wrong = 0
     db.session.commit()
-    os.system(f"cd debug && timeout 60 python runner.py {current_user.username}")
+    os.system(f"cd debug && timeout 60 python runner.py {current_user.username} 2")
     print("judge for",current_user.username,"finished")
+    current_user.is_started=0
     return "0"
 
 if __name__=='__main__':

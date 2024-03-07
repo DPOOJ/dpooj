@@ -38,11 +38,13 @@ $("#submitBtn").on('click', function () {
         return;
     }
     var jarfile = $('#jarFile')[0].files[0];
-    if (jarfile == undefined&&typeof(isuploaded)=='undefined') {
+    if(jarfile == undefined) uploadf = 0;
+    if (!uploadf && typeof(isuploaded)=='undefined') {
         fi.className += " invalid";
         fi.value = "文件不能为空！";
         return;
     }
+    
     if (uploadf&&typeof(isuploaded)=='undefined') {
         var filename = jarfile.name;
         var expname = filename.split('.');
@@ -50,10 +52,10 @@ $("#submitBtn").on('click', function () {
         if (expname != "jar" || filename == expname) {
             fi.className += " invalid";
             fi.value = "请上传.jar文件！";
-            uploadf = 0;
+	    return;
         }
     }
-    if(typeof(isuploaded)=='undefined') uploadf=0;
+    // if(typeof(isuploaded)=='undefined') uploadf=0;
     var formdata = new FormData();
 
     formdata.append('havefile',uploadf);
@@ -144,7 +146,10 @@ $("#updateBtn").on('click', async function () {
                 var swa = sac[1].split("WA");
                 $("#result")[0].innerHTML += swa[0];
                 $("#result")[0].innerHTML += '<span class="red-text">WA</span>';
-                $("#result")[0].innerHTML += swa[1];
+		var sre = swa[1].split("RE");
+                $("#result")[0].innerHTML += sre[0];
+                $("#result")[0].innerHTML += '<span class="purple-text">RE</span>';
+                $("#result")[0].innerHTML += sre[1];
                 //console.log(result.info)
                 if (result.is_wrong == "1") {
                     $("#canDownload")[0].style.display = "block";
