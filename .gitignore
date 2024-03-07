@@ -2,5 +2,8 @@
 *.out
 *.ans
 *.diff
+*.jar
 static/workplace/users/*
+static/workplace/std/*
 **__pycache__
+data.db
