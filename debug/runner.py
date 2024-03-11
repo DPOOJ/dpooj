@@ -37,7 +37,7 @@ class MyThrd(threading.Thread):
         print(f"{self.thread_id} build")
     def run(self):
         global log_count, now_count
-        print(user_path, now_count, tot_count)
+        #print(user_path, now_count, tot_count)
         while now_count < tot_count or tot_count == -1:
             with count_lock:
                 now_count += 1
@@ -88,6 +88,7 @@ class MyThrd(threading.Thread):
         return os.system(f"timeout 10 java -jar {user_path}/code{hw}.jar < {input_path} > {user_path}/output/{username}_{my_count}.out")
 
     def runcode(self, user_path, input_path, my_count):
+        os.system(f"touch {user_path}/output/{my_count}.out")
         return os.system(f"timeout 10 java -jar {user_path}/code.jar < {input_path} > {user_path}/output/{my_count}.out 2> {user_path}/output/{my_count}.log")
 
 def cleandir(name):
