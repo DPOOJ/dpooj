@@ -16,7 +16,7 @@ log_count = 0
 count_lock = threading.Lock()
 file_lock = threading.Lock()
 now_count = 0
-result_template = {'all':0, 'ac':0, 'wa':0, 're':0, 'tle':0}
+result_template = {'all':0, 'ac':0, 'wa':0, 're':0, 'tle':0, 'uke':0}
 
 
 username = sys.argv[1]
