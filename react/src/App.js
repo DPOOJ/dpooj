@@ -9,6 +9,8 @@ import { Progress } from 'antd';
 import { Badge } from 'antd';
 import { Drawer  } from 'antd';
 import { Form, Input, Modal } from 'antd'
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Typography } from 'antd';
 import axios from 'axios';
 import $ from 'jquery'
 
@@ -209,6 +211,9 @@ export function downLoadZip(str, filename) {
   }).then(res => {
     resolveBlob(res, mimeMap.zip)
   })
+  .catch(err => {
+    message.error('download: network error')
+  })
 }
 /**
  * 解析blob响应内容并下载
@@ -236,6 +241,8 @@ export function resolveBlob(res, mimeType) {
 }
 
 var intervalID;
+
+
 
 const App = () => {
   // status
@@ -366,7 +373,7 @@ const App = () => {
       // getUser();
       getResult();
     }, 2000);
-    var postdata = {'args': inputValue}
+    var postdata = {'args': inputValue, 'hwID' : hwID}
     $.ajax({
       url: '/uploadArgs',
       type: 'post',
@@ -387,7 +394,9 @@ const App = () => {
               // setTimeout(getResult, 4000);
             }
           })
-          .catch();
+          .catch(err => {
+            message.error('submit: network error')
+          });
           //console.log("suc");
           // if (result.code == "1") {
           //     console.log(result)
@@ -633,6 +642,32 @@ const App = () => {
       })
   }
 
+  const [hwID, setHwID] = useState(3);
+
+  // choose homework
+  const items = [
+    {
+      label: '作业 1',
+      key: '1',
+    },
+    {
+      label: '作业 2',
+      key: '2',
+    },
+    {
+      label: '作业 3',
+      key: '3',
+    },
+  ];
+  
+  const chooseHw = ({ key }) => {
+    setHwID(parseInt(key));
+    message.success(`评测调整至作业 ${key}`);
+  };
+
+
+
+
   return (
     <>
       <Row justify="space-around" align="middle" style={{
@@ -697,7 +732,20 @@ const App = () => {
           maxHeight: '515px'
           }}>
           <Space direction='vertical' size={15}>
-            <h2>进度：hw2</h2>
+            {/* <h2>进度：hw2</h2> */}
+            <Dropdown
+              menu={{
+                items,
+                onClick:chooseHw,
+              }}
+            >
+              <a onClick={(e) => e.preventDefault()}>
+                <Space>
+                  <h2>进度：作业{hwID}</h2>
+                  <DownOutlined />
+                </Space>
+              </a>
+            </Dropdown>
             {/* <Upload {...fileProps} maxCount={1}>
               <Tooltip title='请使用jdk1.8打包，否则会RE' placement='bottom'>
                 <Button icon={<UploadOutlined />}>点击上传.jar文件</Button>

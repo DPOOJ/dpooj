@@ -24,7 +24,7 @@ std_path = f"{workplace_path}/std"
 user_path = f"{workplace_path}/users/{username}"
 result_path = f"{user_path}/result.json"
 hw = sys.argv[2]
-print(f"running for hw {hw}")
+print(f"{username} start running for hw {hw}")
 
 with open(f"{user_path}/runargs.json") as file:
     runargs = json.load(file)

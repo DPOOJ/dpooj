@@ -4,7 +4,7 @@ from markupsafe import escape
 from flask import  Flask, Response, make_response, render_template, send_file, send_from_directory,url_for, flash, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from genargs import genargs_1
+from genargs import genargs
 from init import app, db
 from methods import send_email, generate_code, get_ipaddr
 from models import User, Validation_code,IPinfo
@@ -92,8 +92,9 @@ def uploadArgs():
     username = current_user.username
     user_path=f"{app.config['WORKPLACE_FOLDER']}/users/{username}"
     args = request.form['args']
+    hwID = request.form['hwID']
     runargs_path=f'{user_path}/runargs.json'
-    os.system('echo \'%s\' > %s'%(genargs_1(args), runargs_path))
+    os.system('echo \'%s\' > %s'%(genargs(args, hwID), runargs_path))
     print(f"{username} update args {args}")
     current_user.is_started = 0
     return json.loads('{"code":"0","info":"%s"}'%("上传成功！"))
@@ -271,12 +272,16 @@ def start():
     username = current_user.username
     json_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/result.json"
     args_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/runargs.json"
-    os.system(f"cd debug && timeout 60 python runner.py {username} 2")
 
     total = 0
+    hwID = 0
     with open(args_path, "r") as file:
         args_data = json.load(file)
         total = args_data['num_runs']
+        hwID = args_data['hwID']
+    
+    os.system(f"cd debug && timeout 60 python runner.py {username} {hwID}")
+
     if os.path.exists(json_path):
         with open(json_path, "r") as file:
             json_data = json.load(file)
