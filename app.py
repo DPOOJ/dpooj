@@ -72,7 +72,7 @@ def uploadFile():
             os.system(f"mkdir {user_path}/output/")
             os.system(f"mkdir {user_path}/wrongdata/")
         f.save(os.path.join(user_path, "code.jar"))
-        print(f"{username} uploaded {f.filename} as code.jar in{user_path}")
+        print(f"\033[1m\033[35m{username}\033[0m uploaded {f.filename} as code.jar in{user_path}")
         current_user.is_uploaded = 1
         current_user.is_wrong = 0
         db.session.commit()
@@ -95,7 +95,7 @@ def uploadArgs():
     hwID = request.form['hwID']
     runargs_path=f'{user_path}/runargs.json'
     os.system('echo \'%s\' > %s'%(genargs(args, hwID), runargs_path))
-    print(f"{username} update args {args}")
+    print(f"\033[1m\033[35m{username}\033[0m update args {args}")
     current_user.is_started = 0
     return json.loads('{"code":"0","info":"%s"}'%("上传成功！"))
 
@@ -204,7 +204,7 @@ def handlelogin():
         res='{"code":"0","username":"%s"}'%(user.username)
         print(f"\033[1m\033[35m{ip} logged in as:\033[0m",
                 f"id: {current_user.id} |",
-                f"username: {current_user.username} |",
+                f"username: \033[1m\033[35m{current_user.username}\033[0m |",
                 f"uploaded: {current_user.is_uploaded} |",
                 f"got WA:{current_user.is_wrong}",sep=" ")
         return json.loads(res)
@@ -212,7 +212,7 @@ def handlelogin():
 @app.route('/logout',methods=['POST'])
 @login_required
 def logout():
-    print(current_user.username,"logged out")
+    print(f"\033[1m\033[35m{current_user.username}\033[0m","logged out")
     logout_user()
     return "0"
 
@@ -220,7 +220,7 @@ def logout():
 @login_required
 def download():
     username=current_user.username
-    print(username,"wants to download")
+    print(f"\033[1m\033[35m{username}\033[0m","wants to download")
     user_path=f"{app.config['WORKPLACE_FOLDER']}/users/{username}"
     if not os.listdir(f"{user_path}/wrongdata"):
         print("blocked")
@@ -242,21 +242,23 @@ def update():
     # print(username, "wants to update")
     json_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/result.json"
     total = "0"
-    with open(args_path, "r") as file:
-        args_data = json.load(file)
-        total = args_data['num_runs']
+    if os.path.exists(args_path):
+        with open(args_path, "r") as file:
+            args_data = json.load(file)
+            total = args_data['num_runs']
 
     if os.path.exists(json_path):
         with open(json_path, "r") as file:
-            json_data = json.load(file)
+            json_data:dict = json.load(file)
         if json_data['wa'] or json_data['re']:
-            print(username,"got WA or RE")
+            # print(username,"got WA or RE")
             current_user.is_wrong = 1
             db.session.commit()
         else:
             current_user.is_wrong = 0
             db.session.commit()
-        return json.loads('{"code":"0","total":"%s","all":"%s","AC":"%s","WA":"%s","TLE":"%s","RE":"%s","UKE":"%s"}'%(
+        return json.loads('{"code":"0","running":"%s","total":"%s","all":"%s","AC":"%s","WA":"%s","TLE":"%s","RE":"%s","UKE":"%s"}'%(
+            json_data['running'],
             total, json_data['all'],json_data['ac'],json_data['wa'],json_data['tle'],json_data['re'],json_data['uke']))
     else:
         return json.loads('{"code":"1","info":"%s"}'%("还未开始评测，请稍等"))
@@ -279,20 +281,27 @@ def start():
         args_data = json.load(file)
         total = args_data['num_runs']
         hwID = args_data['hwID']
-    
-    os.system(f"cd debug && timeout 60 python runner.py {username} {hwID}")
 
+    os.system(f"cd debug && python runner.py {username} {hwID}")
+
+    got_wrong = False
     if os.path.exists(json_path):
         with open(json_path, "r") as file:
             json_data = json.load(file)
+        got_wrong = (json_data['all'] - json_data['ac'] > 0)
         ukes = args_data['num_runs'] - json_data['all']
         json_data['all'] += ukes
         json_data['uke'] += ukes
+        json_data['running'] = 0
         with open(json_path, 'w') as file:
             json.dump(json_data, file)
 
-    print("judge for",current_user.username,"finished")
+    print("judge for",f"\033[1m\033[35m{current_user.username}\033[0m","finished",end="")
     current_user.is_started=0
+    if got_wrong:
+        print(",\033[1m\033[31m got Wrong\033[0m")
+    else:
+        print(",\033[1m\033[32m all AC!\033[0m")
     return "0"
 
 if __name__=='__main__':

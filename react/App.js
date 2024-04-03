@@ -48,8 +48,8 @@ const IntegerStep = ({inputValue, onChange}) => {
       <Divider>args</Divider>
       <Col>
         <InputNumber
-          min={10}
-          max={50}
+          min={1}
+          max={20}
           style={{
             margin: '0 16px',
           }}
@@ -57,8 +57,8 @@ const IntegerStep = ({inputValue, onChange}) => {
           onChange={onChange}
         />
         <Slider
-          min={10}
-          max={50}
+          min={1}
+          max={20}
           onChange={onChange}
           value={typeof inputValue === 'number' ? inputValue : 0}
         />
@@ -277,7 +277,7 @@ const App = () => {
     // console.log('--', userID)
     axios.post('/update')
       .then(res => {
-        if((res.data.WA != 0 || res.data.TLE != 0 || res.data.RE != 0)) {=
+        if((res.data.WA != 0 || res.data.TLE != 0 || res.data.RE != 0)) {
           setDownloadInfo([{
             'no': 1,
             'result': {

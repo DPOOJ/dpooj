@@ -131,10 +131,4 @@ def expr(dep,limit):
     return res
 
 if __name__ == "__main__":
-    user_path = sys.argv[1]
-    json_path = f"{user_path}/runargs.json"
-    with open(json_path, 'r') as file:
-        run_args = json.load(file)
-
-    dep = run_args['dep']
-    print(expr(dep, 200))
+    print(expr(1, 150))
