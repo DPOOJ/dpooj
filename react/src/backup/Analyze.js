@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Input, Table, Tag , Space, Drawer, Row, Col, message, Checkbox, Segmented} from "antd";
 import { SearchOutlined, CheckCircleFilled, CloseCircleFilled, WarningFilled, UserSwitchOutlined, FieldTimeOutlined, DoubleRightOutlined} from '@ant-design/icons';
 import axios from 'axios'
@@ -21,15 +21,13 @@ const colorOfType = {
     'RECEIVE' : '#2db7f5',
 }
 
-export default function Analyze( {input, output} ) {
+export default function Analyze() {
     const [dataInput, setDataInput] = useState('');
     const [dataOutput, setDataOutput] = useState('');
     const [tableData, setTableData] = useState([])
     const [showDrawer, setShowDrawer] = useState(false);
     const [filterErr, setFilterErr] = useState(true);
     const [tableSize, setTableSize] = useState('middle');
-    const [timestampOffset, setTimestampOffset] = useState(0.05);
-    var timeOff = 0.05;
     
     function onCheckBoxChange(e) {
         setFilterErr(e.target.checked)
@@ -38,6 +36,13 @@ export default function Analyze( {input, output} ) {
         setShowDrawer(true);
     }
     function closeDrawer() {
+        axios.post('/statistics?src=analyze')
+            .then(res => {
+
+            })
+            .catch(err => {
+
+            })
         let input = matchText(dataInput);
         let output = matchText(dataOutput);
         var res = [...input, ...output]
@@ -56,18 +61,6 @@ export default function Analyze( {input, output} ) {
       clearFilters();
       confirm();
     };
-
-    useEffect(() => {
-        setDataInput(input);
-        setDataOutput(output);
-        let _input = matchText(input);
-        let _output = matchText(output);
-        var res = [..._input, ..._output]
-        res.sort((a, b) => {
-            return a.timestamp - b.timestamp
-        })
-        setTableData(res);
-    }, [input, output])
 
     const getColumnSearchProps = (dataIndex) => ({
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
@@ -265,10 +258,6 @@ export default function Analyze( {input, output} ) {
     function onTextAreaChangeOutput(e) {
         setDataOutput(e.target.value);
     }
-    function onTimestampOffsetChange(e) {
-        timeOff = parseFloat(e.target.value)
-        setTimestampOffset(e.target.value);
-    }
     function setToString(s) {
         var text = '';
         s.forEach (function(value) {
@@ -324,12 +313,6 @@ export default function Analyze( {input, output} ) {
                 }}
                 defaultValue='middle'
             />
-            {/* <TextArea 
-                onChange={onTimestampOffsetChange}
-                defaultValue={timestampOffset}
-                autoSize={{maxRows: 1}}
-                style={{maxWidth: '20%'}}
-            /> */}
             <Button onClick={openDrawer} type="primary">打开输入框</Button>
         </Row>
         <Table columns={columns} dataSource={tableData} pagination={false} size={tableSize}/>
@@ -401,7 +384,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'ARRIVE',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : '',
         'floor': floor,
         'elevatorID' : elevatorID,
@@ -419,7 +402,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'OPEN',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : '',
         'floor': floor,
         'elevatorID' : elevatorID,
@@ -437,7 +420,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'CLOSE',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : '',
         'floor': floor,
         'elevatorID' : elevatorID,
@@ -456,7 +439,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'IN',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : passengerID,
         'floor': floor,
         'elevatorID' : elevatorID,
@@ -475,7 +458,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'OUT',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : passengerID,
         'floor': floor,
         'elevatorID' : elevatorID,
@@ -532,7 +515,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'RESET_ACCEPT',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : '',
         'floor' : '',
         'elevatorID' : elevatorID,
@@ -549,7 +532,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'RESET_BEGIN',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : '',
         'floor' : '',
         'elevatorID' : elevatorID,
@@ -566,7 +549,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'RESET_END',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : '',
         'floor' : '',
         'elevatorID' : elevatorID,
@@ -584,7 +567,7 @@ if (matchArrive) {
     return {
         'inout' : 'OUTPUT',
         'type': 'RECEIVE',
-        'timestamp': timestamp,
+        'timestamp': timestamp+0.5,
         'passengerID' : passengerID,
         'floor' : '',
         'elevatorID' : elevatorID,

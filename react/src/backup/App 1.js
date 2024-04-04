@@ -642,7 +642,7 @@ const App = () => {
       })
   }
 
-  const [hwID, setHwID] = useState(5);
+  const [hwID, setHwID] = useState(6);
 
   // choose homework
   const items = [
@@ -661,6 +661,10 @@ const App = () => {
     {
       label: '作业 5',
       key: '5',
+    },
+    {
+      label: '作业 6',
+      key: '6',
     },
   ];
   

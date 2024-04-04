@@ -226,15 +226,7 @@ function Judge({logged}) {
                 </Space>
               </a>
             </Dropdown>
-            <div style={{maxWidth: '200px'}}>
-              <FileUploader 
-                disabled={!submitAvilable}
-                url='/uploadFile'
-                text={'点击或拖拽上传.jar文件'}
-                hint={'请确保文件使用jdk1.8打包'}
-                callbackFunc={(res) => {}}
-              />
-            </div>
+            <FileUploader disabled={!submitAvilable}/>
             <Button
               type="primary"
               loading={onJudging}

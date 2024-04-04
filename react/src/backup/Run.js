@@ -1,7 +1,6 @@
 // Run.js
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Input, Button, Space, Dropdown, message, Divider, Typography, Drawer, Checkbox, Tabs } from 'antd';
-import { BrowserRouter as Router, Route, Routes, NavLink, Link } from 'react-router-dom';
 import { DownOutlined, DownloadOutlined } from '@ant-design/icons';
 import FileUploader from './FileUploader';
 import axios from 'axios';
@@ -32,7 +31,7 @@ const hwIDs = [
   },
 ];
 
-function Run( { logged, selfTestCallback } ) {
+function Run( { logged } ) {
   const [submitAvilable, setSubmitAvilable] = useState(false);
   const [onJudging, setOnJudging] = useState(false);
   const [hwID, setHwID] = useState(6);
@@ -236,9 +235,6 @@ function Run( { logged, selfTestCallback } ) {
     setInputData(text);
     setselectInput('2');
   }
-  function onLinkToAnalzeClick()  {
-    selfTestCallback(inputData, resultData.out)
-  }
 
   return (
     <>
@@ -324,9 +320,6 @@ function Run( { logged, selfTestCallback } ) {
                 <Space>
                   <h3>Output:</h3>
                   <Button type="text" icon={<DownloadOutlined />} size={'small'} onClick={downloadOutput} />
-                  <Button type='primary'>
-                    <Link to='/analyze' onClick={onLinkToAnalzeClick}>转入分析</Link>
-                  </Button>
                 </Space>
               </Row>
               <div style={{
