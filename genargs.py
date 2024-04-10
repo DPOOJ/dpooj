@@ -6,3 +6,7 @@ def genargs_1(arg1):
 
 def genargs(num_runs, hwID):
     return '{"hwID": %d, "num_runs": %d, "dep": 1}'%(int(hwID), int(num_runs))
+
+
+def genargs_selfTest(hwID):
+    return '{"hwID": %d}' % (int(hwID))

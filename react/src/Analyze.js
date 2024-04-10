@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Table, Tag , Space, Drawer, Row, Col, message, Checkbox, Segmented} from "antd";
-import { SearchOutlined, CheckCircleFilled, CloseCircleFilled, WarningFilled, UserSwitchOutlined, FieldTimeOutlined, DoubleRightOutlined} from '@ant-design/icons';
+import { SearchOutlined, CheckCircleFilled, CloseCircleFilled, MinusCircleFilled, UserSwitchOutlined, FieldTimeOutlined, DoubleRightOutlined} from '@ant-design/icons';
 import axios from 'axios'
 const { TextArea } = Input;
 
@@ -10,16 +10,21 @@ const colorOfType = {
     'ARRIVE' : 'blue',
     'IN' : '#87d068',
     'OUT' : '#D91215',
-    'ERR' : 'black',
-    'INPUT' : 'green',
-    'OUTPUT' : 'blue',
-    'REQUEST' : 'purple',
     'RESET' : 'geekblue',
-    'RESET_ACCEPT' : 'magenta',
     'RESET_BEGIN' : 'gold',
     'RESET_END' : 'cyan',
     'RECEIVE' : '#2db7f5',
+    
+    'REQUEST' : 'purple',
+    'RESET_ACCEPT' : 'magenta',
+
+    'INPUT' : 'green',
+    'OUTPUT' : 'blue',
+
+    'ERR' : 'black',
 }
+
+var timeOff = 0.05;
 
 export default function Analyze( {input, output} ) {
     const [dataInput, setDataInput] = useState('');
@@ -29,7 +34,10 @@ export default function Analyze( {input, output} ) {
     const [filterErr, setFilterErr] = useState(true);
     const [tableSize, setTableSize] = useState('middle');
     const [timestampOffset, setTimestampOffset] = useState(0.05);
-    var timeOff = 0.05;
+    var filterErrorType = true;
+    useEffect(() => {
+        filterErrorType = filterErr
+    }, [filterErr])
     
     function onCheckBoxChange(e) {
         setFilterErr(e.target.checked)
@@ -145,6 +153,7 @@ export default function Analyze( {input, output} ) {
             title : 'inout',
             dataIndex: 'inout',
             key: 'inout',
+            width: '80px',
             render: (inout) => <Tag color={colorOfType[inout]}>{inout}</Tag>,
             filters: [
                 {
@@ -172,28 +181,33 @@ export default function Analyze( {input, output} ) {
             title : 'type',
             dataIndex: 'type',
             key: 'type',
+            width: '120px',
             render: (type) => <Tag color={colorOfType[type]}>{type}</Tag>
         },
         {
             title : 'timestamp',
             dataIndex: 'timestamp',
             key: 'timestamp',
+            width: '100px',
         },
         {
             title : 'floor',
             dataIndex: 'floor',
             key: 'floor',
+            width: '100px',
         },
         {
             title : 'passengerID',
             dataIndex: 'passengerID',
             key: 'passengerID',
+            width: '110px',
             ...getColumnSearchProps('passengerID'),
         },
         {
             title : 'elevatorID',
             dataIndex: 'elevatorID',
             key: 'elevatorID',
+            width: '100px',
             filters: [
                 {
                     text: '1',
@@ -226,12 +240,13 @@ export default function Analyze( {input, output} ) {
             title: 'elevatorSettings',
             dataIndex: 'elevatorSettings',
             key: 'elevartorSettings',
+            width: '130px',
             render: (value) => <>
-                {   value.maxPassenger == '' && value.moveTime == '' ? <div></div> : 
+                {   value.capacity == '' && value.speed == '' ? <div></div> : 
                     <div>
                         <Space>
-                            <UserSwitchOutlined />{value.maxPassenger}
-                            <FieldTimeOutlined />{value.moveTime}
+                            <UserSwitchOutlined />{value.capacity}
+                            <FieldTimeOutlined />{value.speed}
                         </Space>
                     </div>
                 }
@@ -242,21 +257,26 @@ export default function Analyze( {input, output} ) {
             dataIndex : 'passengers',
             key : 'passengers',
         },
-        // {
-        //     title : 'others',
-        //     dataIndex: 'others',
-        //     key: 'others',
-        //     render: (info) => <>
-        //         <Space direction="horizontal" size={10} align="end">
-        //             {
-        //                 info['type'] == 'CORRECT' ? <CheckCircleFilled color="green"/> :
-        //                 info['type'] == 'WRONG' ? <CloseCircleFilled color="red"/> : 
-        //                 <WarningFilled color="yellow"/>
-        //             }
-        //             <div>{info['message']}</div>
-        //         </Space>
-        //     </>
-        // },
+        {
+            title : 'received',
+            dataIndex : 'received',
+            key : 'received',
+        },
+        {
+            title : 'others',
+            dataIndex: 'others',
+            key: 'others',
+            render: (info) => <>
+                <Space direction="horizontal" size={10} align="end">
+                    {
+                        info['type'] == 'CORRECT' ? <CheckCircleFilled style={{color: "green"}}/> :
+                        info['type'] == 'WRONG' ? <CloseCircleFilled style={{color: "red"}}/> : 
+                        <MinusCircleFilled style={{color: "gray"}}/>
+                    }
+                    <div>{info['message']}</div>
+                </Space>
+            </>
+        },
     ]
 
     function onTextAreaChangeInput(e) {
@@ -282,9 +302,22 @@ export default function Analyze( {input, output} ) {
         let ele_passengers = {
             '0' : new Set(), '1' : new Set(), '2' : new Set(), '3' : new Set(), '4' : new Set() , '5' : new Set(), '6' : new Set()
         };
+        let ele_received = {
+            '0' : new Set(), '1' : new Set(), '2' : new Set(), '3' : new Set(), '4' : new Set() , '5' : new Set(), '6' : new Set()
+        };
+        let ele_opening = [false, false, false, false, false, false, false];
+        let ele_setting = {
+            '0':{'speed': 400, 'capacity': 6}, '1':{'speed': 400, 'capacity': 6}, '2':{'speed': 400, 'capacity': 6}, '3':{'speed': 400, 'capacity': 6}, 
+            '4':{'speed': 400, 'capacity': 6}, '5':{'speed': 400, 'capacity': 6}, '6':{'speed': 400, 'capacity': 6}, 
+        }
+        let ele_resetting = [false, false, false, false, false, false, false];
+        let ele_floor = [1,1,1,1,1,1,1];
+        let wait_passengers = new Set();
+        let pas_received = new Set();
         for (var i = 0; i < datalist.length; i++) {
             let t = match(datalist[i]);
-            if(t['type'] == 'ERR' && filterErr) {
+            var others = {'type' : 'CORRECT','message' : ''}
+            if(t['type'] == 'ERR' && filterErrorType) {
                 continue;
             }
             if (t['origin'] == '') {
@@ -293,23 +326,128 @@ export default function Analyze( {input, output} ) {
             let eleId = t['elevatorID'];
             if (!(eleId == '1' || eleId == '2' || eleId == '3' || eleId == '4' || eleId == '5' || eleId == '6')) {
                 eleId = '0';
+                others={'type':'WRONG','message':'电梯编号错误'}
             }
-            if (t['type'] == 'IN') {
-                let pasId = t['passengerID'];
-                ele_passengers[eleId].add(pasId);
+            if (t['type'] == 'OPEN') {
+                if (ele_opening[eleId] == true) {
+                    others = {'type':'WRONG', 'message':'门已开'}
+                } else if (ele_resetting[eleId] == true) {
+                    others = {'type':'WRONG', 'message':'重置中开门'}
+                } else if (ele_floor[eleId] != t['floor']) {
+                    others = {'type':'WRONG', 'message':`开门楼层错误 当前:${ele_floor[eleId]}`}
+                } else {
+                    ele_opening[eleId] = true;
+                }
             }
-            if (t['type'] == 'OUT') {
-                let pasId = t['passengerID'];
-                ele_passengers[eleId].delete(pasId);
+            else if (t['type'] == 'CLOSE') {
+                if (ele_opening[eleId] == false) {
+                    others = {'type':'WRONG', 'message':'门已关'}
+                } else if (ele_resetting == true) {
+                    others = {'type':'WRONG', 'message':'重置中关门'}
+                } else if (ele_floor[eleId] != t['floor']) {
+                    others = {'type':'WRONG', 'message':`关门楼层错误 当前:${ele_floor[eleId]}`}
+                } else {
+                    ele_opening[eleId] = false;
+                }
+            }
+            else if (t['type'] == 'ARRIVE') {
+                if (ele_received[eleId].size === 0) {
+                    others = {'type': 'WRONG', 'message':'没有RECEIVE'}
+                } else if (Math.abs(ele_floor[eleId] - t['floor']) != 1) {
+                    others = {'type': 'WRONG', 'message':`移动层数不为1: ${ele_floor[eleId]}-${t['floor']}`}
+                } else if (t['floor'] > 11 || t['floor'] < 1) {
+                    others = {'type': 'WRONG', 'message':'楼层非法'}
+                } else if (ele_resetting[eleId] == true) {
+                    others = {'type': 'WRONG', 'message':'重置中移动'}
+                } else {
+                    ele_floor[eleId] = t['floor'];
+                }
+            }
+            else if (t['type'] == 'IN') {
+                if (ele_opening[eleId] == false) {
+                    others = {'type':'WRONG', 'message':'门没开'}
+                } else {
+                    let pasId = t['passengerID'];
+                    if (!ele_received[eleId].has(pasId)) {
+                        others = {'type':'WRONG', 'message':'未RECEIVE'}
+                    } else if (ele_resetting[eleId] == true) {
+                        others = {'type': 'WRONG', 'message':'重置中进入'}
+                    } else {
+                        wait_passengers.delete(pasId);
+                        ele_passengers[eleId].add(pasId);
+                    }
+                }
+            }
+            else if (t['type'] == 'OUT') {
+                if (ele_opening[eleId] == false) {
+                    others = {'type':'WRONG', 'message':'门没开'}
+                } else if (ele_resetting[eleId] == true) {
+                    others = {'type': 'WRONG', 'message':'重置中离开'}
+                } else {
+                    let pasId = t['passengerID'];
+                    if (!ele_passengers[eleId].has(pasId)) {
+                        others = {'type':'WRONG', 'message':'电梯里没这个人'}
+                    } else {
+                        ele_passengers[eleId].delete(pasId);
+                        ele_received[eleId].delete(pasId);
+                        pas_received.delete(pasId);
+                    }
+                }
+            }
+            else if (t['type'] == 'RECEIVE') {
+                let pasId = t['passengerID']
+                if (ele_received[eleId].has(pasId)) {
+                    others = {'type':'WRONG','message':'本电梯RECEIVE过这个人'}
+                } else if (pas_received.has(pasId)) {
+                    others = {'type':'WRONG','message':'这个人已经RECEIVE过'}
+                } else if (ele_resetting[eleId] == true) {
+                    others = {'type': 'WRONG', 'message':'重置中RECEIVE'}
+                } else {
+                    ele_received[eleId].add(pasId);
+                    pas_received.add(pasId);
+                }
+            }
+            else if (t['type'] == 'RESET_ACCEPT') {
+
+            }
+            else if (t['type'] == 'RESET_BEGIN') {
+                if (ele_passengers[eleId].size !== 0) {
+                    others = {'type':'WRONG','message':'电梯未清空'}
+                } else if (ele_opening[eleId] == true) {
+                    others = {'type':'WRONG','message':'没关门'}
+                } else if (ele_resetting[eleId] == true) {
+                    others = {'type': 'WRONG', 'message':'重置中重置'}
+                } else {
+                    ele_resetting[eleId] = true;
+                    ele_received[eleId].forEach((pasId) => {
+                        pas_received.delete(pasId);
+                    })
+                    ele_received[eleId] = new Set();
+                }
+            }
+            else if (t['type'] == 'RESET_END') {
+                if (ele_resetting[eleId] != true) {
+                    others = {'type': 'WRONG', 'message':'没有开始重置，不能结束'}
+                } else {
+                    ele_resetting[eleId] = false;
+                }
+            }
+            else if (t['type'] == 'REQUEST') {
+                wait_passengers.add(t['passengerID'])
+                others = {'type':'none', 'message':''}
+            }
+            else if (t['type'] == 'RESET') {
+                others = {'type':'none', 'message':''}
+            }
+            else {
+                others = {'type':'none', 'message':''}
             }
             res.push({
                 'key': `${t['type']}-${i+1}`, 
                 ...match(datalist[i]), 
-                'passengers' : eleId == 0 ? '' : setToString(ele_passengers[eleId]),
-                'others' : {
-                    'type' : 'CORRECT',
-                    'message' : ''
-                }
+                'passengers' : t['type'] == 'REQUEST' ? `history: ${setToString(wait_passengers)}` : eleId == 0 ? '' : setToString(ele_passengers[eleId]),
+                'received' : eleId == 0 ? '' : setToString(ele_received[eleId]),
+                'others' : others,
             });
         }
         return(res);
@@ -324,15 +462,36 @@ export default function Analyze( {input, output} ) {
                 }}
                 defaultValue='middle'
             />
-            {/* <TextArea 
-                onChange={onTimestampOffsetChange}
-                defaultValue={timestampOffset}
-                autoSize={{maxRows: 1}}
-                style={{maxWidth: '20%'}}
-            /> */}
+            <Space size={10}>
+                <TextArea 
+                    onChange={onTimestampOffsetChange}
+                    defaultValue={timestampOffset}
+                    autoSize={{maxRows: 1}}
+                    style={{width: '100px'}}
+                />
+                <Button onClick={() => {
+                        setDataInput(dataInput);
+                        setDataOutput(dataOutput);
+                        let _input = matchText(dataInput);
+                        let _output = matchText(dataOutput);
+                        var res = [..._input, ..._output]
+                        res.sort((a, b) => {
+                            return a.timestamp - b.timestamp
+                        })
+                        setTableData(res);
+                    }}>
+                    设置输出时间偏移
+                </Button>
+            </Space>
             <Button onClick={openDrawer} type="primary">打开输入框</Button>
         </Row>
-        <Table columns={columns} dataSource={tableData} pagination={false} size={tableSize}/>
+        <Table 
+            columns={columns} 
+            dataSource={tableData} 
+            pagination={false} 
+            size={tableSize}
+            scroll={{y:'calc(100vh - 300px)'}}
+        />
         <Drawer
             title="这是一个输入框>_<"
             placement='right'
@@ -367,248 +526,248 @@ export default function Analyze( {input, output} ) {
 }
 
 function match(text) {
-const inputString = text;
+    const inputString = text;
 
-const regexArrive       = /\[ *([\d.]+)\]ARRIVE-(\d+)-(\d+)/;
-const regexOpen         = /\[ *([\d.]+)\]OPEN-(\d+)-(\d+)/;
-const regexClose        = /\[ *([\d.]+)\]CLOSE-(\d+)-(\d+)/;
-const regexIn           = /\[ *([\d.]+)\]IN-(\d+)-(\d+)-(\d+)/;
-const regexOut          = /\[ *([\d.]+)\]OUT-(\d+)-(\d+)-(\d+)/;
-const regexFrom         = /\[ *([\d.]+)\](\d+)-FROM-(\d+)-TO-(\d+)/;
-const regexReset        = /\[ *([\d.]+)\]RESET-Elevator-(\d+)-(\d+)-([\d.]+)/;
-const regexResetAccept  = /\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-([\d.]+)/;
-const regexResetBgein   = /\[ *([\d.]+)\]RESET_BEGIN-(\d+)/;
-const regexResetEnd     = /\[ *([\d.]+)\]RESET_END-(\d+)/;
-const regexReceive      = /\[ *([\d.]+)\]RECEIVE-(\d+)-(\d+)/;
+    const regexArrive       = /\[ *([\d.]+)\]ARRIVE-(\d+)-(\d+)/;
+    const regexOpen         = /\[ *([\d.]+)\]OPEN-(\d+)-(\d+)/;
+    const regexClose        = /\[ *([\d.]+)\]CLOSE-(\d+)-(\d+)/;
+    const regexIn           = /\[ *([\d.]+)\]IN-(\d+)-(\d+)-(\d+)/;
+    const regexOut          = /\[ *([\d.]+)\]OUT-(\d+)-(\d+)-(\d+)/;
+    const regexFrom         = /\[ *([\d.]+)\](\d+)-FROM-(\d+)-TO-(\d+)/;
+    const regexReset        = /\[ *([\d.]+)\]RESET-Elevator-(\d+)-(\d+)-([\d.]+)/;
+    const regexResetAccept  = /\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-([\d.]+)/;
+    const regexResetBgein   = /\[ *([\d.]+)\]RESET_BEGIN-(\d+)/;
+    const regexResetEnd     = /\[ *([\d.]+)\]RESET_END-(\d+)/;
+    const regexReceive      = /\[ *([\d.]+)\]RECEIVE-(\d+)-(\d+)/;
 
-let matchArrive = inputString.match(regexArrive);
-let matchOpen = inputString.match(regexOpen);
-let matchClose = inputString.match(regexClose);
-let matchIn = inputString.match(regexIn);
-let matchOut = inputString.match(regexOut);
-let matchFrom = inputString.match(regexFrom);
-let matchReset = inputString.match(regexReset);
-let matchResetAccept = inputString.match(regexResetAccept);
-let matchResetBegin = inputString.match(regexResetBgein);
-let matchResetEnd = inputString.match(regexResetEnd);
-let matchReceive = inputString.match(regexReceive);
+    let matchArrive = inputString.match(regexArrive);
+    let matchOpen = inputString.match(regexOpen);
+    let matchClose = inputString.match(regexClose);
+    let matchIn = inputString.match(regexIn);
+    let matchOut = inputString.match(regexOut);
+    let matchFrom = inputString.match(regexFrom);
+    let matchReset = inputString.match(regexReset);
+    let matchResetAccept = inputString.match(regexResetAccept);
+    let matchResetBegin = inputString.match(regexResetBgein);
+    let matchResetEnd = inputString.match(regexResetEnd);
+    let matchReceive = inputString.match(regexReceive);
 
-if (matchArrive) {
-    const timestamp = parseFloat(matchArrive[1]);
-    const floor = matchArrive[2];
-    const elevatorID = matchArrive[3];
-    // console.log("ARRIVE:", timestamp, floor, elevatorID);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'ARRIVE',
-        'timestamp': timestamp,
-        'passengerID' : '',
-        'floor': floor,
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
+    if (matchArrive) {
+        const timestamp = parseFloat(matchArrive[1]) + timeOff;
+        const floor = matchArrive[2];
+        const elevatorID = matchArrive[3];
+        // console.log("ARRIVE:", timestamp, floor, elevatorID);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'ARRIVE',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor': floor,
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    } else if (matchOpen) {
+        const timestamp = parseFloat(matchOpen[1]) + timeOff;
+        const floor = matchOpen[2];
+        const elevatorID = matchOpen[3];
+        // console.log("OPEN:", timestamp, floor, elevatorID);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'OPEN',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor': floor,
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    } else if (matchClose) {
+        const timestamp = parseFloat(matchClose[1]) + timeOff;
+        const floor = matchClose[2];
+        const elevatorID = matchClose[3];
+        // console.log("CLOSE:", timestamp, floor, elevatorID);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'CLOSE',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor': floor,
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    } else if (matchIn) {
+        const timestamp = parseFloat(matchIn[1]) + timeOff;
+        const passengerID = matchIn[2];
+        const floor = matchIn[3];
+        const elevatorID = matchIn[4];
+        // console.log("IN:", timestamp, passengerID, floor, elevatorID);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'IN',
+            'timestamp': timestamp,
+            'passengerID' : passengerID,
+            'floor': floor,
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    } else if (matchOut) {
+        const timestamp = parseFloat(matchOut[1]) + timeOff;
+        const passengerID = matchOut[2];
+        const floor = matchOut[3];
+        const elevatorID = matchOut[4];
+        // console.log("OUT:", timestamp, passengerID, floor, elevatorID);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'OUT',
+            'timestamp': timestamp,
+            'passengerID' : passengerID,
+            'floor': floor,
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    } else if (matchFrom) {
+        const timestamp = parseFloat(matchFrom[1]);
+        const passengerID = matchFrom[2];
+        const beginFloor = matchFrom[3];
+        const endFloor = matchFrom[4];
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'INPUT',
+            'type': 'REQUEST',
+            'timestamp': timestamp,
+            'passengerID' : passengerID,
+            'floor' : `${beginFloor} → ${endFloor}`,
+            'elevatorID' : '',
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    } else if (matchReset) {
+        const timestamp = parseFloat(matchReset[1]);
+        const elevatorID = matchReset[2];
+        const capacity = matchReset[3];
+        const speed = parseFloat(matchReset[4]);
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'INPUT',
+            'type': 'RESET',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor' : '',
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': capacity,
+                'speed': speed,
+            },
+            'origin' : text,
+        }
+    }  else if (matchResetAccept) {
+        const timestamp = parseFloat(matchResetAccept[1]) + timeOff;
+        const elevatorID = matchResetAccept[2];
+        const capacity = matchResetAccept[3];
+        const speed = parseFloat(matchResetAccept[4]);
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'RESET_ACCEPT',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor' : '',
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': capacity,
+                'speed': speed,
+            },
+            'origin' : text,
+        }
+    } else if (matchResetBegin) {
+        const timestamp = parseFloat(matchResetBegin[1]) + timeOff;
+        const elevatorID = matchResetBegin[2];
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'RESET_BEGIN',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor' : '',
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    }   else if (matchResetEnd) {
+        const timestamp = parseFloat(matchResetEnd[1]) + timeOff;
+        const elevatorID = matchResetEnd[2];
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'RESET_END',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor' : '',
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    }  else if (matchReceive) {
+        const timestamp = parseFloat(matchReceive[1]) + timeOff;
+        const passengerID = matchReceive[2];
+        const elevatorID = matchReceive[3];
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'RECEIVE',
+            'timestamp': timestamp,
+            'passengerID' : passengerID,
+            'floor' : '',
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
+    } else {
+        // console.log("No match found", text);
+        return {
+            'inout' : 'ERR',
+            'type': 'ERR',
+            'timestamp': '',
+            'passengerID' : '',
+            'floor': '',
+            'elevatorID' : '',
+            'elevatorSettings' : {
+                'capacity': '',
+                'speed': '',
+            },
+            'origin' : text,
+        }
     }
-} else if (matchOpen) {
-    const timestamp = parseFloat(matchOpen[1]);
-    const floor = matchOpen[2];
-    const elevatorID = matchOpen[3];
-    // console.log("OPEN:", timestamp, floor, elevatorID);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'OPEN',
-        'timestamp': timestamp,
-        'passengerID' : '',
-        'floor': floor,
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-} else if (matchClose) {
-    const timestamp = parseFloat(matchClose[1]);
-    const floor = matchClose[2];
-    const elevatorID = matchClose[3];
-    // console.log("CLOSE:", timestamp, floor, elevatorID);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'CLOSE',
-        'timestamp': timestamp,
-        'passengerID' : '',
-        'floor': floor,
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-} else if (matchIn) {
-    const timestamp = parseFloat(matchIn[1]);
-    const passengerID = matchIn[2];
-    const floor = matchIn[3];
-    const elevatorID = matchIn[4];
-    // console.log("IN:", timestamp, passengerID, floor, elevatorID);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'IN',
-        'timestamp': timestamp,
-        'passengerID' : passengerID,
-        'floor': floor,
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-} else if (matchOut) {
-    const timestamp = parseFloat(matchOut[1]);
-    const passengerID = matchOut[2];
-    const floor = matchOut[3];
-    const elevatorID = matchOut[4];
-    // console.log("OUT:", timestamp, passengerID, floor, elevatorID);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'OUT',
-        'timestamp': timestamp,
-        'passengerID' : passengerID,
-        'floor': floor,
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-} else if (matchFrom) {
-    const timestamp = parseFloat(matchFrom[1]);
-    const passengerID = matchFrom[2];
-    const beginFloor = matchFrom[3];
-    const endFloor = matchFrom[4];
-    // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
-    return {
-        'inout' : 'INPUT',
-        'type': 'REQUEST',
-        'timestamp': timestamp,
-        'passengerID' : passengerID,
-        'floor' : `${beginFloor} → ${endFloor}`,
-        'elevatorID' : '',
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-} else if (matchReset) {
-    const timestamp = parseFloat(matchReset[1]);
-    const elevatorID = matchReset[2];
-    const maxPassenger = matchReset[3];
-    const moveTime = parseFloat(matchReset[4]);
-    // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
-    return {
-        'inout' : 'INPUT',
-        'type': 'RESET',
-        'timestamp': timestamp,
-        'passengerID' : '',
-        'floor' : '',
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': maxPassenger,
-            'moveTime': moveTime,
-        },
-        'origin' : text,
-    }
-}  else if (matchResetAccept) {
-    const timestamp = parseFloat(matchResetAccept[1]);
-    const elevatorID = matchResetAccept[2];
-    const maxPassenger = matchResetAccept[3];
-    const moveTime = parseFloat(matchResetAccept[4]);
-    // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'RESET_ACCEPT',
-        'timestamp': timestamp,
-        'passengerID' : '',
-        'floor' : '',
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': maxPassenger,
-            'moveTime': moveTime,
-        },
-        'origin' : text,
-    }
-} else if (matchResetBegin) {
-    const timestamp = parseFloat(matchResetBegin[1]);
-    const elevatorID = matchResetBegin[2];
-    // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'RESET_BEGIN',
-        'timestamp': timestamp,
-        'passengerID' : '',
-        'floor' : '',
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-}   else if (matchResetEnd) {
-    const timestamp = parseFloat(matchResetEnd[1]);
-    const elevatorID = matchResetEnd[2];
-    // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'RESET_END',
-        'timestamp': timestamp,
-        'passengerID' : '',
-        'floor' : '',
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-}  else if (matchReceive) {
-    const timestamp = parseFloat(matchReceive[1]);
-    const passengerID = matchReceive[2];
-    const elevatorID = matchReceive[3];
-    // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
-    return {
-        'inout' : 'OUTPUT',
-        'type': 'RECEIVE',
-        'timestamp': timestamp,
-        'passengerID' : passengerID,
-        'floor' : '',
-        'elevatorID' : elevatorID,
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-} else {
-    // console.log("No match found", text);
-    return {
-        'inout' : 'ERR',
-        'type': 'ERR',
-        'timestamp': '',
-        'passengerID' : '',
-        'floor': '',
-        'elevatorID' : '',
-        'elevatorSettings' : {
-            'maxPassenger': '',
-            'moveTime': '',
-        },
-        'origin' : text,
-    }
-}
 
 }

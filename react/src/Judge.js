@@ -123,12 +123,13 @@ function Judge({logged}) {
             }
           })
           .catch(err => {
-            message.error('submit: network error')
+            message.error('追踪评测状态失败，你的评测可能还未结束')
+            setOnJudging(false);
           });
       },
       error: function (result) {
         setOnJudging(false);
-        message.error('network error')
+        message.error('上传参数失败，你的评测未能开始')
         console.log("submit request error", result);
       }
     });
@@ -160,10 +161,12 @@ function Judge({logged}) {
             setOnJudging(true);
           }
           setJudgeTimes(res.data.total);
+        } else {
+          setOnJudging(false);
         }
       })
       .catch(err => {
-        message.error('network error, tracking evaluation information failed')
+        message.error('网络错误：追踪评测状态失败')
         setOnJudging(false);
       });
   }

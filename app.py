@@ -11,6 +11,9 @@ from models import User, Validation_code,IPinfo
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_login.mixins import AnonymousUserMixin
 
+from self_test import self_test
+app.register_blueprint(self_test)
+
 login_manager = LoginManager(app)
 
 @login_manager.user_loader
@@ -298,6 +301,7 @@ def start():
 
     print("judge for",f"\033[1m\033[35m{current_user.username}\033[0m","finished",end="")
     current_user.is_started=0
+    db.session.commit()
     if got_wrong:
         print(",\033[1m\033[31m got Wrong\033[0m")
     else:

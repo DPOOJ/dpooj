@@ -15,6 +15,8 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev')
 app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(os.path.dirname(app.root_path) + project_path,
                                                                os.getenv('DATABASE_FILE', 'data.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_POOL_SIZE'] = 100
+app.config['SQLALCHEMY_POOL_TIMEOUT'] = 20
 app.config['WORKPLACE_FOLDER']='./static/workplace'
 app.config['DEBUG_PATH']='./debug'
 
