@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Table, Tag , Space, Drawer, Row, Col, message, Checkbox, Segmented} from "antd";
-import { SearchOutlined, CheckCircleFilled, CloseCircleFilled, MinusCircleFilled, UserSwitchOutlined, FieldTimeOutlined, DoubleRightOutlined} from '@ant-design/icons';
+import { SearchOutlined, CheckCircleFilled, CloseCircleFilled, MinusCircleFilled, UserSwitchOutlined, FieldTimeOutlined, DoubleRightOutlined, LinkOutlined} from '@ant-design/icons';
 import axios from 'axios'
 const { TextArea } = Input;
 
@@ -11,12 +11,14 @@ const colorOfType = {
     'IN' : '#87d068',
     'OUT' : '#D91215',
     'RESET' : 'geekblue',
+    'RESET(DC)' : 'geekblue',
     'RESET_BEGIN' : 'gold',
     'RESET_END' : 'cyan',
     'RECEIVE' : '#2db7f5',
     
     'REQUEST' : 'purple',
     'RESET_ACCEPT' : 'magenta',
+    'RESET_ACCEPT(DC)' : 'magenta',
 
     'INPUT' : 'green',
     'OUTPUT' : 'blue',
@@ -233,6 +235,54 @@ export default function Analyze( {input, output} ) {
                     text: '6',
                     value: '6',
                 },
+                {
+                    text: '1-A',
+                    value: '1-A',
+                },
+                {
+                    text: '1-B',
+                    value: '1-B',
+                },
+                {
+                    text: '2-A',
+                    value: '2-A',
+                },
+                {
+                    text: '2-B',
+                    value: '2-B',
+                },
+                {
+                    text: '3-A',
+                    value: '3-A',
+                },
+                {
+                    text: '3-B',
+                    value: '3-B',
+                },
+                {
+                    text: '4-A',
+                    value: '4-A',
+                },
+                {
+                    text: '4-B',
+                    value: '4-B',
+                },
+                {
+                    text: '5-A',
+                    value: '5-A',
+                },
+                {
+                    text: '5-B',
+                    value: '5-B',
+                },
+                {
+                    text: '6-A',
+                    value: '6-A',
+                },
+                {
+                    text: '6-B',
+                    value: '6-B',
+                },
             ],
             onFilter: (value, record) => record.elevatorID == value || record.elevatorID == '',
         },
@@ -247,6 +297,12 @@ export default function Analyze( {input, output} ) {
                         <Space>
                             <UserSwitchOutlined />{value.capacity}
                             <FieldTimeOutlined />{value.speed}
+                            {
+                                value.translateFloor == '' ? '' : 
+                                <Space>
+                                    <LinkOutlined />{value['translateFloor']}
+                                </Space>
+                            }
                         </Space>
                     </div>
                 }
@@ -262,21 +318,21 @@ export default function Analyze( {input, output} ) {
             dataIndex : 'received',
             key : 'received',
         },
-        {
-            title : 'others',
-            dataIndex: 'others',
-            key: 'others',
-            render: (info) => <>
-                <Space direction="horizontal" size={10} align="end">
-                    {
-                        info['type'] == 'CORRECT' ? <CheckCircleFilled style={{color: "green"}}/> :
-                        info['type'] == 'WRONG' ? <CloseCircleFilled style={{color: "red"}}/> : 
-                        <MinusCircleFilled style={{color: "gray"}}/>
-                    }
-                    <div>{info['message']}</div>
-                </Space>
-            </>
-        },
+        // {
+        //     title : 'others',
+        //     dataIndex: 'others',
+        //     key: 'others',
+        //     render: (info) => <>
+        //         <Space direction="horizontal" size={10} align="end">
+        //             {
+        //                 info['type'] == 'CORRECT' ? <CheckCircleFilled style={{color: "green"}}/> :
+        //                 info['type'] == 'WRONG' ? <CloseCircleFilled style={{color: "red"}}/> : 
+        //                 <MinusCircleFilled style={{color: "gray"}}/>
+        //             }
+        //             <div>{info['message']}</div>
+        //         </Space>
+        //     </>
+        // },
     ]
 
     function onTextAreaChangeInput(e) {
@@ -300,20 +356,24 @@ export default function Analyze( {input, output} ) {
         let datalist = data.split('\n')
         let res = [];
         let ele_passengers = {
-            '0' : new Set(), '1' : new Set(), '2' : new Set(), '3' : new Set(), '4' : new Set() , '5' : new Set(), '6' : new Set()
+            '0' : new Set(), '1' : new Set(), '2' : new Set(), '3' : new Set(), '4' : new Set() , '5' : new Set(), '6' : new Set(),
+            '0' : new Set(), '1-A' : new Set(), '2-A' : new Set(), '3-A' : new Set(), '4-A' : new Set() , '5-A' : new Set(), '6-A' : new Set(),
+            '0' : new Set(), '1-B' : new Set(), '2-B' : new Set(), '3-B' : new Set(), '4-B' : new Set() , '5-B' : new Set(), '6-B' : new Set(),
         };
         let ele_received = {
-            '0' : new Set(), '1' : new Set(), '2' : new Set(), '3' : new Set(), '4' : new Set() , '5' : new Set(), '6' : new Set()
+            '0' : new Set(), '1' : new Set(), '2' : new Set(), '3' : new Set(), '4' : new Set() , '5' : new Set(), '6' : new Set(),
+            '0' : new Set(), '1-A' : new Set(), '2-A' : new Set(), '3-A' : new Set(), '4-A' : new Set() , '5-A' : new Set(), '6-A' : new Set(),
+            '0' : new Set(), '1-B' : new Set(), '2-B' : new Set(), '3-B' : new Set(), '4-B' : new Set() , '5-B' : new Set(), '6-B' : new Set(),
         };
-        let ele_opening = [false, false, false, false, false, false, false];
-        let ele_setting = {
-            '0':{'speed': 400, 'capacity': 6}, '1':{'speed': 400, 'capacity': 6}, '2':{'speed': 400, 'capacity': 6}, '3':{'speed': 400, 'capacity': 6}, 
-            '4':{'speed': 400, 'capacity': 6}, '5':{'speed': 400, 'capacity': 6}, '6':{'speed': 400, 'capacity': 6}, 
-        }
-        let ele_resetting = [false, false, false, false, false, false, false];
-        let ele_floor = [1,1,1,1,1,1,1];
-        let wait_passengers = new Set();
-        let pas_received = new Set();
+        // let ele_opening = [false, false, false, false, false, false, false];
+        // let ele_setting = {
+        //     '0':{'speed': 400, 'capacity': 6}, '1':{'speed': 400, 'capacity': 6}, '2':{'speed': 400, 'capacity': 6}, '3':{'speed': 400, 'capacity': 6}, 
+        //     '4':{'speed': 400, 'capacity': 6}, '5':{'speed': 400, 'capacity': 6}, '6':{'speed': 400, 'capacity': 6}, 
+        // }
+        // let ele_resetting = [false, false, false, false, false, false, false];
+        // let ele_floor = [1,1,1,1,1,1,1];
+        // let wait_passengers = new Set();
+        // let pas_received = new Set();
         for (var i = 0; i < datalist.length; i++) {
             let t = match(datalist[i]);
             var others = {'type' : 'CORRECT','message' : ''}
@@ -324,128 +384,128 @@ export default function Analyze( {input, output} ) {
                 continue;
             }
             let eleId = t['elevatorID'];
-            if (!(eleId == '1' || eleId == '2' || eleId == '3' || eleId == '4' || eleId == '5' || eleId == '6')) {
+            if (!(eleId[0] == '1' || eleId[0] == '2' || eleId[0] == '3' || eleId[0] == '4' || eleId[0] == '5' || eleId[0] == '6')) {
                 eleId = '0';
-                others={'type':'WRONG','message':'电梯编号错误'}
+                // others={'type':'WRONG','message':'电梯编号错误'}
             }
-            if (t['type'] == 'OPEN') {
-                if (ele_opening[eleId] == true) {
-                    others = {'type':'WRONG', 'message':'门已开'}
-                } else if (ele_resetting[eleId] == true) {
-                    others = {'type':'WRONG', 'message':'重置中开门'}
-                } else if (ele_floor[eleId] != t['floor']) {
-                    others = {'type':'WRONG', 'message':`开门楼层错误 当前:${ele_floor[eleId]}`}
-                } else {
-                    ele_opening[eleId] = true;
-                }
-            }
-            else if (t['type'] == 'CLOSE') {
-                if (ele_opening[eleId] == false) {
-                    others = {'type':'WRONG', 'message':'门已关'}
-                } else if (ele_resetting == true) {
-                    others = {'type':'WRONG', 'message':'重置中关门'}
-                } else if (ele_floor[eleId] != t['floor']) {
-                    others = {'type':'WRONG', 'message':`关门楼层错误 当前:${ele_floor[eleId]}`}
-                } else {
-                    ele_opening[eleId] = false;
-                }
-            }
-            else if (t['type'] == 'ARRIVE') {
-                if (ele_received[eleId].size === 0) {
-                    others = {'type': 'WRONG', 'message':'没有RECEIVE'}
-                } else if (Math.abs(ele_floor[eleId] - t['floor']) != 1) {
-                    others = {'type': 'WRONG', 'message':`移动层数不为1: ${ele_floor[eleId]}-${t['floor']}`}
-                } else if (t['floor'] > 11 || t['floor'] < 1) {
-                    others = {'type': 'WRONG', 'message':'楼层非法'}
-                } else if (ele_resetting[eleId] == true) {
-                    others = {'type': 'WRONG', 'message':'重置中移动'}
-                } else {
-                    ele_floor[eleId] = t['floor'];
-                }
-            }
+            // if (t['type'] == 'OPEN') {
+            //     if (ele_opening[eleId] == true) {
+            //         others = {'type':'WRONG', 'message':'门已开'}
+            //     } else if (ele_resetting[eleId] == true) {
+            //         others = {'type':'WRONG', 'message':'重置中开门'}
+            //     } else if (ele_floor[eleId] != t['floor']) {
+            //         others = {'type':'WRONG', 'message':`开门楼层错误 当前:${ele_floor[eleId]}`}
+            //     } else {
+            //         ele_opening[eleId] = true;
+            //     }
+            // }
+            // else if (t['type'] == 'CLOSE') {
+            //     if (ele_opening[eleId] == false) {
+            //         others = {'type':'WRONG', 'message':'门已关'}
+            //     } else if (ele_resetting == true) {
+            //         others = {'type':'WRONG', 'message':'重置中关门'}
+            //     } else if (ele_floor[eleId] != t['floor']) {
+            //         others = {'type':'WRONG', 'message':`关门楼层错误 当前:${ele_floor[eleId]}`}
+            //     } else {
+            //         ele_opening[eleId] = false;
+            //     }
+            // }
+            // else if (t['type'] == 'ARRIVE') {
+            //     if (ele_received[eleId].size === 0) {
+            //         others = {'type': 'WRONG', 'message':'没有RECEIVE'}
+            //     } else if (Math.abs(ele_floor[eleId] - t['floor']) != 1) {
+            //         others = {'type': 'WRONG', 'message':`移动层数不为1: ${ele_floor[eleId]}-${t['floor']}`}
+            //     } else if (t['floor'] > 11 || t['floor'] < 1) {
+            //         others = {'type': 'WRONG', 'message':'楼层非法'}
+            //     } else if (ele_resetting[eleId] == true) {
+            //         others = {'type': 'WRONG', 'message':'重置中移动'}
+            //     } else {
+            //         ele_floor[eleId] = t['floor'];
+            //     }
+            // }
             else if (t['type'] == 'IN') {
-                if (ele_opening[eleId] == false) {
-                    others = {'type':'WRONG', 'message':'门没开'}
-                } else {
-                    let pasId = t['passengerID'];
-                    if (!ele_received[eleId].has(pasId)) {
-                        others = {'type':'WRONG', 'message':'未RECEIVE'}
-                    } else if (ele_resetting[eleId] == true) {
-                        others = {'type': 'WRONG', 'message':'重置中进入'}
-                    } else {
-                        wait_passengers.delete(pasId);
-                        ele_passengers[eleId].add(pasId);
-                    }
-                }
+                // if (ele_opening[eleId] == false) {
+                //     others = {'type':'WRONG', 'message':'门没开'}
+                // } else {
+                //     if (!ele_received[eleId].has(pasId)) {
+                //         others = {'type':'WRONG', 'message':'未RECEIVE'}
+                //     } else if (ele_resetting[eleId] == true) {
+                //         others = {'type': 'WRONG', 'message':'重置中进入'}
+                //     } else {
+                //         wait_passengers.delete(pasId);
+                //     }
+                // }
+                let pasId = t['passengerID'];
+                ele_passengers[eleId].add(pasId);
             }
             else if (t['type'] == 'OUT') {
-                if (ele_opening[eleId] == false) {
-                    others = {'type':'WRONG', 'message':'门没开'}
-                } else if (ele_resetting[eleId] == true) {
-                    others = {'type': 'WRONG', 'message':'重置中离开'}
-                } else {
-                    let pasId = t['passengerID'];
-                    if (!ele_passengers[eleId].has(pasId)) {
-                        others = {'type':'WRONG', 'message':'电梯里没这个人'}
-                    } else {
-                        ele_passengers[eleId].delete(pasId);
-                        ele_received[eleId].delete(pasId);
-                        pas_received.delete(pasId);
-                    }
-                }
+                // if (ele_opening[eleId] == false) {
+                //     others = {'type':'WRONG', 'message':'门没开'}
+                // } else if (ele_resetting[eleId] == true) {
+                //     others = {'type': 'WRONG', 'message':'重置中离开'}
+                // } else {
+                //     if (!ele_passengers[eleId].has(pasId)) {
+                //         others = {'type':'WRONG', 'message':'电梯里没这个人'}
+                //     } else {
+                //         pas_received.delete(pasId);
+                //     }
+                // }
+                let pasId = t['passengerID'];
+                ele_passengers[eleId].delete(pasId);
+                ele_received[eleId].delete(pasId);
             }
             else if (t['type'] == 'RECEIVE') {
                 let pasId = t['passengerID']
-                if (ele_received[eleId].has(pasId)) {
-                    others = {'type':'WRONG','message':'本电梯RECEIVE过这个人'}
-                } else if (pas_received.has(pasId)) {
-                    others = {'type':'WRONG','message':'这个人已经RECEIVE过'}
-                } else if (ele_resetting[eleId] == true) {
-                    others = {'type': 'WRONG', 'message':'重置中RECEIVE'}
-                } else {
-                    ele_received[eleId].add(pasId);
-                    pas_received.add(pasId);
-                }
+                // if (ele_received[eleId].has(pasId)) {
+                //     others = {'type':'WRONG','message':'本电梯RECEIVE过这个人'}
+                // } else if (pas_received.has(pasId)) {
+                //     others = {'type':'WRONG','message':'这个人已经RECEIVE过'}
+                // } else if (ele_resetting[eleId] == true) {
+                //     others = {'type': 'WRONG', 'message':'重置中RECEIVE'}
+                // } else {
+                //     pas_received.add(pasId);
+                // }
+                ele_received[eleId].add(pasId);
             }
-            else if (t['type'] == 'RESET_ACCEPT') {
+            // else if (t['type'] == 'RESET_ACCEPT') {
 
-            }
+            // }
             else if (t['type'] == 'RESET_BEGIN') {
-                if (ele_passengers[eleId].size !== 0) {
-                    others = {'type':'WRONG','message':'电梯未清空'}
-                } else if (ele_opening[eleId] == true) {
-                    others = {'type':'WRONG','message':'没关门'}
-                } else if (ele_resetting[eleId] == true) {
-                    others = {'type': 'WRONG', 'message':'重置中重置'}
-                } else {
-                    ele_resetting[eleId] = true;
-                    ele_received[eleId].forEach((pasId) => {
-                        pas_received.delete(pasId);
-                    })
-                    ele_received[eleId] = new Set();
-                }
+                // if (ele_passengers[eleId].size !== 0) {
+                //     others = {'type':'WRONG','message':'电梯未清空'}
+                // } else if (ele_opening[eleId] == true) {
+                //     others = {'type':'WRONG','message':'没关门'}
+                // } else if (ele_resetting[eleId] == true) {
+                //     others = {'type': 'WRONG', 'message':'重置中重置'}
+                // } else {
+                //     ele_resetting[eleId] = true;
+                //     ele_received[eleId].forEach((pasId) => {
+                //         pas_received.delete(pasId);
+                //     })
+                // }
+                ele_received[eleId] = new Set();
             }
-            else if (t['type'] == 'RESET_END') {
-                if (ele_resetting[eleId] != true) {
-                    others = {'type': 'WRONG', 'message':'没有开始重置，不能结束'}
-                } else {
-                    ele_resetting[eleId] = false;
-                }
-            }
-            else if (t['type'] == 'REQUEST') {
-                wait_passengers.add(t['passengerID'])
-                others = {'type':'none', 'message':''}
-            }
-            else if (t['type'] == 'RESET') {
-                others = {'type':'none', 'message':''}
-            }
-            else {
-                others = {'type':'none', 'message':''}
-            }
+            // else if (t['type'] == 'RESET_END') {
+            //     if (ele_resetting[eleId] != true) {
+            //         others = {'type': 'WRONG', 'message':'没有开始重置，不能结束'}
+            //     } else {
+            //         ele_resetting[eleId] = false;
+            //     }
+            // }
+            // else if (t['type'] == 'REQUEST') {
+            //     wait_passengers.add(t['passengerID'])
+            //     others = {'type':'none', 'message':''}
+            // }
+            // else if (t['type'] == 'RESET') {
+            //     others = {'type':'none', 'message':''}
+            // }
+            // else {
+            //     others = {'type':'none', 'message':''}
+            // }
             res.push({
                 'key': `${t['type']}-${i+1}`, 
                 ...match(datalist[i]), 
-                'passengers' : t['type'] == 'REQUEST' ? `history: ${setToString(wait_passengers)}` : eleId == 0 ? '' : setToString(ele_passengers[eleId]),
+                'passengers' : t['type'] == 'REQUEST' ? '' : eleId == 0 ? '' : setToString(ele_passengers[eleId]),
                 'received' : eleId == 0 ? '' : setToString(ele_received[eleId]),
                 'others' : others,
             });
@@ -528,17 +588,19 @@ export default function Analyze( {input, output} ) {
 function match(text) {
     const inputString = text;
 
-    const regexArrive       = /\[ *([\d.]+)\]ARRIVE-(\d+)-(\d+)/;
-    const regexOpen         = /\[ *([\d.]+)\]OPEN-(\d+)-(\d+)/;
-    const regexClose        = /\[ *([\d.]+)\]CLOSE-(\d+)-(\d+)/;
-    const regexIn           = /\[ *([\d.]+)\]IN-(\d+)-(\d+)-(\d+)/;
-    const regexOut          = /\[ *([\d.]+)\]OUT-(\d+)-(\d+)-(\d+)/;
+    const regexArrive       = /\[ *([\d.]+)\]ARRIVE-(\d+)-(\d+-?[A|B]?)/;
+    const regexOpen         = /\[ *([\d.]+)\]OPEN-(\d+)-(\d+-?[A|B]?)/;
+    const regexClose        = /\[ *([\d.]+)\]CLOSE-(\d+)-(\d+-?[A|B]?)/;
+    const regexIn           = /\[ *([\d.]+)\]IN-(\d+)-(\d+)-(\d+-?[A|B]?)/;
+    const regexOut          = /\[ *([\d.]+)\]OUT-(\d+)-(\d+)-(\d+-?[A|B]?)/;
     const regexFrom         = /\[ *([\d.]+)\](\d+)-FROM-(\d+)-TO-(\d+)/;
     const regexReset        = /\[ *([\d.]+)\]RESET-Elevator-(\d+)-(\d+)-([\d.]+)/;
-    const regexResetAccept  = /\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-([\d.]+)/;
+    const regexDCReset      = /\[ *([\d.]+)\]RESET-DCElevator-(\d+)-(\d+)-(\d+)-([\d.]+)/;
+    const regexResetAccept  = /^\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-([\d.]+)$/;
+    const regexDCResetAccept  = /^\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-(\d+)-([\d.]+)$/;
     const regexResetBgein   = /\[ *([\d.]+)\]RESET_BEGIN-(\d+)/;
     const regexResetEnd     = /\[ *([\d.]+)\]RESET_END-(\d+)/;
-    const regexReceive      = /\[ *([\d.]+)\]RECEIVE-(\d+)-(\d+)/;
+    const regexReceive      = /\[ *([\d.]+)\]RECEIVE-(\d+)-(\d+-?[A|B]?)/;
 
     let matchArrive = inputString.match(regexArrive);
     let matchOpen = inputString.match(regexOpen);
@@ -547,7 +609,9 @@ function match(text) {
     let matchOut = inputString.match(regexOut);
     let matchFrom = inputString.match(regexFrom);
     let matchReset = inputString.match(regexReset);
+    let matchDCReset = inputString.match(regexDCReset);
     let matchResetAccept = inputString.match(regexResetAccept);
+    let matchDCResetAccept = inputString.match(regexDCResetAccept);
     let matchResetBegin = inputString.match(regexResetBgein);
     let matchResetEnd = inputString.match(regexResetEnd);
     let matchReceive = inputString.match(regexReceive);
@@ -567,6 +631,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -585,6 +650,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -603,6 +669,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -622,6 +689,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -641,6 +709,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -660,6 +729,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -679,6 +749,28 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': capacity,
                 'speed': speed,
+                'translateFloor':'',
+            },
+            'origin' : text,
+        }
+    }  else if (matchDCReset) {
+        const timestamp = parseFloat(matchDCReset[1]);
+        const elevatorID = matchDCReset[2];
+        const translateFloor = matchDCReset[3];
+        const capacity = matchDCReset[4];
+        const speed = parseFloat(matchDCReset[5]);
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'INPUT',
+            'type': 'RESET(DC)',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor' : '',
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': capacity,
+                'speed': speed,
+                'translateFloor': translateFloor,
             },
             'origin' : text,
         }
@@ -698,6 +790,28 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': capacity,
                 'speed': speed,
+                'translateFloor':'',
+            },
+            'origin' : text,
+        }
+    } else if (matchDCResetAccept) {
+        const timestamp = parseFloat(matchDCResetAccept[1]) + timeOff;
+        const elevatorID = matchDCResetAccept[2];
+        const translateFloor = matchDCResetAccept[3];
+        const capacity = matchDCResetAccept[4];
+        const speed = parseFloat(matchDCResetAccept[5]);
+        // console.log("FROM:", timestamp, passengerID, beginFloor, endFlood);
+        return {
+            'inout' : 'OUTPUT',
+            'type': 'RESET_ACCEPT(DC)',
+            'timestamp': timestamp,
+            'passengerID' : '',
+            'floor' : '',
+            'elevatorID' : elevatorID,
+            'elevatorSettings' : {
+                'capacity': capacity,
+                'speed': speed,
+                'translateFloor': translateFloor,
             },
             'origin' : text,
         }
@@ -715,6 +829,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -732,6 +847,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -750,6 +866,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
@@ -765,6 +882,7 @@ function match(text) {
             'elevatorSettings' : {
                 'capacity': '',
                 'speed': '',
+                'translateFloor':'',
             },
             'origin' : text,
         }
