@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, Table, Tag , Space, Drawer, Row, Col, message, Checkbox, Segmented} from "antd";
-import { SearchOutlined, CheckCircleFilled, CloseCircleFilled, MinusCircleFilled, UserSwitchOutlined, FieldTimeOutlined, DoubleRightOutlined, LinkOutlined} from '@ant-design/icons';
-import axios from 'axios'
+import { SearchOutlined, UserSwitchOutlined, FieldTimeOutlined, LinkOutlined} from '@ant-design/icons';
 const { TextArea } = Input;
 
 const colorOfType = {
