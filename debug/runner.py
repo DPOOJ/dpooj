@@ -124,7 +124,7 @@ def runcode(user_path, input_path, output_path, log_path, hw):
         os.system(f"touch {output_path}")
     if hw <= 3:
         return os.system(f"timeout 10 java -jar {user_path}/code.jar < {input_path} > {output_path} 2> {log_path}")
-    elif hw <= 7:
+    elif hw <= 8:
         cdir = os.path.abspath('.')
         if cdir.split('/')[-1] != 'debug':
             cdir = os.path.join(cdir,'debug')

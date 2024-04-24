@@ -29,6 +29,10 @@ const hwIDs = [
     label: '作业 6',
     key: '6',
   },
+  {
+    label: '作业 7',
+    key: '7',
+  },
 ];
 
 function Judge({logged}) {
@@ -45,7 +49,7 @@ function Judge({logged}) {
     'all' : 0,
     'running': false,
   })
-  const [hwID, setHwID] = useState(6);
+  const [hwID, setHwID] = useState(7);
   const [downloadInfo, setDownloadInfo] = useState([])
   const [intervalID, setIntervalID] = useState(null)
 
@@ -124,7 +128,6 @@ function Judge({logged}) {
           })
           .catch(err => {
             message.error('追踪评测状态失败，你的评测可能还未结束')
-            setOnJudging(false);
           });
       },
       error: function (result) {
@@ -141,6 +144,10 @@ function Judge({logged}) {
     axios.post('/update')
       .then(res => {
         console.log('get result', res);
+        if(res.data.code == 1 && res.data.info == "还未开始评测，请稍等") {
+          message.warning("没有正在进行的评测")
+          return;
+        }
         if((res.data.WA != 0 || res.data.TLE != 0 || res.data.RE != 0)) {
           setDownloadInfo([{
             'key': 1,
@@ -157,17 +164,18 @@ function Judge({logged}) {
         if(res.data.running == 1) {
           if(res.data.all >= res.data.total) {
             setOnJudging(false);
+            message.success('上次评测已结束');
           } else {
             setOnJudging(true);
           }
           setJudgeTimes(res.data.total);
         } else {
           setOnJudging(false);
+          message.success('上次评测已结束');
         }
       })
       .catch(err => {
-        message.error('网络错误：追踪评测状态失败')
-        setOnJudging(false);
+        message.error('网络超时')
       });
   }
   const getDownloadFile = () => {
