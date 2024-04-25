@@ -517,20 +517,6 @@ export default function Analyze( {input, output} ) {
                 let pasId = t['passengerID'];
                 ele_passengers[eleId].delete(pasId);
                 ele_received[eleId].delete(pasId);
-                // if (ele_opening[eleId] == false) {
-                //     others = {'type':'WRONG', 'message':'门没开'}
-                // } else if (ele_resetting[eleId] == true) {
-                //     others = {'type': 'WRONG', 'message':'重置中离开'}
-                // } else {
-                //     if (!ele_passengers[eleId].has(pasId)) {
-                //         others = {'type':'WRONG', 'message':'电梯里没这个人'}
-                //     } else {
-                //         pas_received.delete(pasId);
-                //     }
-                // }
-                let pasId = t['passengerID'];
-                ele_passengers[eleId].delete(pasId);
-                ele_received[eleId].delete(pasId);
             }
             else if (t['type'] == 'RECEIVE') {
                 let pasId = t['passengerID']
@@ -715,22 +701,13 @@ function match(text) {
     const regexClose        = /\[ *([\d.]+)\]CLOSE-(\d+)-(\d+-?[A|B]?)/;
     const regexIn           = /\[ *([\d.]+)\]IN-(\d+)-(\d+)-(\d+-?[A|B]?)/;
     const regexOut          = /\[ *([\d.]+)\]OUT-(\d+)-(\d+)-(\d+-?[A|B]?)/;
-    const regexArrive       = /\[ *([\d.]+)\]ARRIVE-(\d+)-(\d+-?[A|B]?)/;
-    const regexOpen         = /\[ *([\d.]+)\]OPEN-(\d+)-(\d+-?[A|B]?)/;
-    const regexClose        = /\[ *([\d.]+)\]CLOSE-(\d+)-(\d+-?[A|B]?)/;
-    const regexIn           = /\[ *([\d.]+)\]IN-(\d+)-(\d+)-(\d+-?[A|B]?)/;
-    const regexOut          = /\[ *([\d.]+)\]OUT-(\d+)-(\d+)-(\d+-?[A|B]?)/;
     const regexFrom         = /\[ *([\d.]+)\](\d+)-FROM-(\d+)-TO-(\d+)/;
     const regexReset        = /\[ *([\d.]+)\]RESET-Elevator-(\d+)-(\d+)-([\d.]+)/;
     const regexDCReset      = /\[ *([\d.]+)\]RESET-DCElevator-(\d+)-(\d+)-(\d+)-([\d.]+)/;
     const regexResetAccept  = /^\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-([\d.]+)$/;
     const regexDCResetAccept  = /^\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-(\d+)-([\d.]+)$/;
-    const regexDCReset      = /\[ *([\d.]+)\]RESET-DCElevator-(\d+)-(\d+)-(\d+)-([\d.]+)/;
-    const regexResetAccept  = /^\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-([\d.]+)$/;
-    const regexDCResetAccept  = /^\[ *([\d.]+)\]RESET_ACCEPT-(\d+)-(\d+)-(\d+)-([\d.]+)$/;
     const regexResetBgein   = /\[ *([\d.]+)\]RESET_BEGIN-(\d+)/;
     const regexResetEnd     = /\[ *([\d.]+)\]RESET_END-(\d+)/;
-    const regexReceive      = /\[ *([\d.]+)\]RECEIVE-(\d+)-(\d+-?[A|B]?)/;
     const regexReceive      = /\[ *([\d.]+)\]RECEIVE-(\d+)-(\d+-?[A|B]?)/;
 
     let matchArrive = inputString.match(regexArrive);
@@ -741,9 +718,7 @@ function match(text) {
     let matchFrom = inputString.match(regexFrom);
     let matchReset = inputString.match(regexReset);
     let matchDCReset = inputString.match(regexDCReset);
-    let matchDCReset = inputString.match(regexDCReset);
     let matchResetAccept = inputString.match(regexResetAccept);
-    let matchDCResetAccept = inputString.match(regexDCResetAccept);
     let matchDCResetAccept = inputString.match(regexDCResetAccept);
     let matchResetBegin = inputString.match(regexResetBgein);
     let matchResetEnd = inputString.match(regexResetEnd);
