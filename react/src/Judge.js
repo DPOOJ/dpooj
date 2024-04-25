@@ -1,7 +1,7 @@
 // Judge.js
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, Row, Col, Space, Slider, InputNumber, Divider, Badge, Progress, Tag, Drawer, Table, Dropdown } from 'antd';
+import { Button, Row, Col, Space, Slider, InputNumber, Divider, Badge, Progress, Tag, Drawer, Table, Dropdown, Collapse } from 'antd';
 import { message } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import $ from 'jquery'
@@ -71,7 +71,6 @@ function Judge({logged}) {
   useEffect(() => {
     if (!logged) {
       setOnJudging(false);
-      setSubmitAvilable(false);
       setJudgeInfo({
         'AC': 0,
         'WA': 0,
@@ -83,7 +82,6 @@ function Judge({logged}) {
       })
       setDownloadInfo([])
     } else {
-      setSubmitAvilable(true);
       getResult();
     }
   }, [logged]);
@@ -94,7 +92,7 @@ function Judge({logged}) {
     } else {
       setSubmitAvilable(!onJudging);
     }
-  }, [onJudging]);
+  }, [onJudging, logged]);
 
   function onJudgeTimeSliderChange(value) {
     setJudgeTimes(value);
@@ -151,6 +149,10 @@ function Judge({logged}) {
           message.warning("没有正在进行的评测")
           return;
         }
+        if(res.data.code == 1 && res.data.info == "还未开始评测，请稍等") {
+          message.warning("没有正在进行的评测")
+          return;
+        }
         if((res.data.WA != 0 || res.data.TLE != 0 || res.data.RE != 0)) {
           setDownloadInfo([{
             'key': 1,
@@ -161,6 +163,11 @@ function Judge({logged}) {
               'RE': res.data.RE != 0,
             },
             'download': getDownloadFile,
+            'show': {
+              'in':'in',
+              'out':'out',
+              'info':'err',
+            }
           }])
         }
         setJudgeInfo(res.data);
@@ -177,6 +184,7 @@ function Judge({logged}) {
         }
       })
       .catch(err => {
+        message.error('网络超时')
         message.error('网络超时')
       });
   }
@@ -360,20 +368,37 @@ const ResultTable = ({resData}) => {
       dataIndex: 'download',
       render: (download) => <Button onClick={download}>下载数据</Button>
     },
-    // {
-    //   title: 'show',
-    //   dataIndex: 'show',
-    //   render: (res) => {
-    //     const st = () => {
-    //       setShowData(res);
-    //       showDrawer();
-    //     }
-    //     return <>
-    //       <a onClick={st}>详细信息</a>
-    //     </>
-    //   }
-    // },
+    {
+      title: 'show',
+      dataIndex: 'show',
+      render: (res) => {
+        const st = () => {
+          setShowData(res);
+          showDrawer();
+        }
+        return <>
+          <a onClick={st}>详细信息</a>
+        </>
+      }
+    },
   ];
+  function downloadText(text, filename) {
+    const content = text;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    
+    URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+  }
+  function downloadOInput() {
+    downloadText(showData.in, 'input.txt');
+  }
   return (
     <>
       <h1>Wrong Data Points:</h1>
@@ -392,12 +417,46 @@ const ResultTable = ({resData}) => {
           </Space>
         }
       >
-        <Divider>Standard In</Divider>
-        <p>{showData.in}</p>
-        <Divider>Standard Answer</Divider>
-        <p>{showData.ans}</p>
-        <Divider>Your Answer</Divider>
-        <p>{showData.out}</p>
+        <Space 
+          direction='vertical' 
+          size="middle"
+          style={{
+            display: 'flex',
+          }}
+        >
+          <Space>
+            <Button onClick={downloadOInput}>下载输入</Button>
+            <Button onClick={downloadOInput}>下载输出</Button>
+          </Space>
+          <Collapse
+            items={[
+              {
+                key: '1',
+                label: 'Information',
+                children: <p>{showData.info}</p>,
+              },
+            ]}
+            defaultActiveKey={['1']}
+          />
+          <Collapse
+            items={[
+              {
+                key: '1',
+                label: 'Input',
+                children: <p>{showData.in}</p>,
+              },
+            ]}
+          />
+          <Collapse
+            items={[
+              {
+                key: '1',
+                label: 'Output',
+                children: <div><p>{showData.out}</p></div>,
+              },
+            ]}
+          />
+        </Space>
       </Drawer>
     </>
   );
