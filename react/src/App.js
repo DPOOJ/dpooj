@@ -23,10 +23,10 @@ function App() {
       label: (<NavLink to="/run" onClick={() => setNowPosition('run')}>运行</NavLink>),
       key: 'run',
     },
-    {
-      label: (<NavLink to="/analyze" onClick={() => setNowPosition('analyze')}>分析</NavLink>),
-      key: 'analyze',
-    },
+    // {
+    //   label: (<NavLink to="/analyze" onClick={() => setNowPosition('analyze')}>分析</NavLink>),
+    //   key: 'analyze',
+    // },
     {
       label: (<NavLink to="/notice" onClick={() => setNowPosition('notice')}>公告</NavLink>),
       key: 'notice',

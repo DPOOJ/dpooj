@@ -114,15 +114,17 @@ class MyThrd(threading.Thread):
         
 
 def stdRuncode(std_path, input_path, std_output_path, hw):
-    if hw <= 3:
+    if hw <= 4:
         return os.system(f"timeout 10 java -jar {std_path}/code{hw}.jar < {input_path} > {std_output_path}")
-    elif hw <= 7:
+    elif hw <= 8:
         return os.system(f"echo 'no std out for unit2' > {std_output_path}")
+    elif hw <= 12:
+        return os.system(f"timeout 20 java -jar {std_path}/code{hw}.jar < {input_path} > {std_output_path}")
 
 def runcode(user_path, input_path, output_path, log_path, hw):
     with file_lock:
         os.system(f"touch {output_path}")
-    if hw <= 3:
+    if hw <= 4:
         return os.system(f"timeout 10 java -jar {user_path}/code.jar < {input_path} > {output_path} 2> {log_path}")
     elif hw <= 8:
         cdir = os.path.abspath('.')
@@ -131,6 +133,8 @@ def runcode(user_path, input_path, output_path, log_path, hw):
         datainput_path = os.path.join(cdir,f"datainput{hw}")
 
         return os.system(f"{datainput_path} {input_path} 2>> {log_path} | timeout 120 java -jar {user_path}/code.jar > {output_path} 2>> {log_path}")
+    elif hw <= 12:
+        return os.system(f"timeout 10 java -jar {user_path}/code.jar < {input_path} > {output_path} 2> {log_path}")
 
 
 def cleandir(name):

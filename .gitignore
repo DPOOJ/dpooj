@@ -5,6 +5,8 @@
 *.jar
 static/workplace/users/*
 static/workplace/std/*
+static/workplace/input/*
+static/workplace/input_official/*
 **/__pycache__
 data.db
 __pycache__/*.pyc

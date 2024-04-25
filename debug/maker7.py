@@ -1,5 +1,6 @@
 
 from random import randint, uniform
+from utils import gen_arange
 
 DEBUG = 1
 
@@ -10,12 +11,6 @@ MAX_TIME = 30 if not DEBUG else 50
 MAX_FLOOR = 11
 MOVE_DELAYS = [0.2, 0.3, 0.4, 0.5, 0.6]
 CAPACITIES = [3, 4, 5, 6, 7, 8]
-
-def gen_arange(n):
-    li = []
-    for i in range(1, n + 1):
-        li.append(i)
-    return li
 
 ids = gen_arange(MAX_REQS)
 req_for_elevs = [0] * NUM_ELEVS

@@ -33,6 +33,10 @@ const hwIDs = [
     label: '作业 7',
     key: '7',
   },
+  {
+    label: '作业 9',
+    key: '9',
+  },
 ];
 
 function Judge({logged}) {
@@ -49,7 +53,7 @@ function Judge({logged}) {
     'all' : 0,
     'running': false,
   })
-  const [hwID, setHwID] = useState(7);
+  const [hwID, setHwID] = useState(9);
   const [downloadInfo, setDownloadInfo] = useState([])
   const [intervalID, setIntervalID] = useState(null)
 
@@ -121,7 +125,6 @@ function Judge({logged}) {
               clearInterval(intervalID);
               setTimeout(() => {
                 getResult()
-                setOnJudging(false);
                 message.success('评测完成');
               }, 2000)
             }
@@ -162,16 +165,15 @@ function Judge({logged}) {
         }
         setJudgeInfo(res.data);
         if(res.data.running == 1) {
-          if(res.data.all >= res.data.total) {
+          if(parseInt(res.data.all) >= parseInt(res.data.total)) {
+            console.log("stop tracing: all >= total")
             setOnJudging(false);
-            message.success('上次评测已结束');
           } else {
             setOnJudging(true);
           }
           setJudgeTimes(res.data.total);
         } else {
           setOnJudging(false);
-          message.success('上次评测已结束');
         }
       })
       .catch(err => {
