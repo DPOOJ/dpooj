@@ -7,7 +7,7 @@ MAX_LINE = 10000 if not DEBUG else 3000
 MAX_N = 100
 
 ops = ['ap', 'ar', 'mr', 'qv', 'qci', 'qbs', 'qts']
-shares = [0,0, 100, 0, 10, 100, 100]
+shares = [0,0, 100, 0, 0, 100, 100]
 sum = [0]
 
 def r_include():
@@ -37,7 +37,7 @@ def gen_load():
     names = []
     ages = []
     for id in ids:
-        name = f"DPO-bot-{id}"
+        name = f"C:\\Users\\周俊驰\\Desktop\\test-{id}"
         age = randint(1, 200)
         persons.append(Person(id, name, age))
         names.append(name)
@@ -71,7 +71,7 @@ def gen_ap():
     global persons, n
     if randint(0,100) > 50 or n <= 0:
         n += 1
-        name = f"DPO-bot-{n}"
+        name = "DPO-bot-" + str(n)
         age = randint(1, 200)
         persons.append(Person(n, name, age))
         print('ap', n, name, age)

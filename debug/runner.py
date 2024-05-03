@@ -153,7 +153,7 @@ if __name__ == "__main__":
     user_path = f"{workplace_path}/users/{username}"
     result_path = f"{user_path}/result.json"
 
-    print(f"\033[1m\033[35m{username}\033[0m start running for hw {hw}")
+    
 
     with open(f"{user_path}/runargs.json") as file:
         runargs = json.load(file)
@@ -165,6 +165,8 @@ if __name__ == "__main__":
     cleanfile(result_path)
     with open(result_path, 'w') as file:
         json.dump(result_template, file)
+
+    print(f"\033[1m\033[35m{username}\033[0m start running for hw {hw}")
 
     for i in range(num_workers):
         MyThrd(i,username, hw).start()

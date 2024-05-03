@@ -6,23 +6,46 @@ DEBUG = 1
 MAX_LINE = 10000 if not DEBUG else 3000
 MAX_N = 100
 
-ops = ['ap', 'ar', 'mr', 'qv', 'qci', 'qbs', 'qts']
-shares = [0,0, 100, 0, 10, 100, 100]
+ops = {
+    'ap':0,
+    'ar':0,
+    'mr':100,
+    'qv':100, 
+    'qci':50,
+    'qbs':10,
+    'qts':10,
+
+    'at':10,
+    'dt':5,
+    'att':100,
+    'dft':100,
+    'qtvs':10,
+    'qtav':10,
+    'qba':10,
+    'qcs':10,
+    'qsp':10
+}
 sum = [0]
 
 def r_include():
     return randint(0, 100) > 0
 
 def init_sum():
-    global shares, sum
-    for sh in shares:
-        sum.append(sum[-1] + sh)
+    global ops, sum
+    for share in ops.values():
+        sum.append(sum[-1] + share)
 
 class Person():
     def __init__(self, id, name, age) -> None:
         self.id = id
         self.name = name
         self.age = age
+        self.tags = []
+        self.records = []
+    
+    def add(self, id2):
+        if id2 not in self.records:
+            self.records.append(id2)
 
 persons = []
 n = 0
@@ -56,9 +79,9 @@ def gen_load():
 def genOp() -> str:
     global sum, ops
     num = randint(0, sum[-1] - 1)
-    for i in range(len(sum) - 1):
+    for i, op in enumerate(ops.keys()):
         if(num < sum[i + 1]):
-            return ops[i]
+            return op
 
 def getRandId():
     global persons, n
@@ -66,6 +89,28 @@ def getRandId():
         return persons[randint(0, n - 1)].id if r_include() else n + randint(1, n)
     else:
         return randint(1, MAX_N)
+
+def getRandTid(pid):
+    global persons
+    if len(persons) > pid:
+        person: Person = persons[pid]
+        tn = len(person.tags)
+        if tn > 0 and r_include():
+            return person.tags[randint(0, tn - 1)]
+        else:
+            return tn + 1
+    else:
+        return randint(1, MAX_N)
+
+def getRandAId(pid):
+    global persons, n
+    if len(persons) > pid and n > 0:
+        an = len(persons[pid].records)
+        if an > 0 and r_include():
+            return persons[pid].records[randint(0, an - 1)]
+        return an + 1
+    else:
+        return n + 1
 
 def gen_ap():
     global persons, n
@@ -84,6 +129,8 @@ def gen_ar():
     id2 = getRandId()
     value = randint(1, 200)
     print('ar', id1, id2, value)
+    persons[id1].add(id2)
+    persons[id2].add(id1)
 
 def gen_mr():
     id1 = getRandId()
@@ -106,6 +153,53 @@ def gen_qbs():
 
 def gen_qts():
     print('qts')
+
+def gen_at():
+    global persons
+    id = getRandId()
+    tid = getRandTid(id)
+    if len(persons) > id:
+        persons[id].tags.append(tid)
+    print('at', id, tid)
+
+def gen_dt():
+    id = getRandId()
+    tid = getRandTid(id)
+    print('dt', id, tid)
+
+def gen_att():
+    id2 = getRandId()
+    tid = getRandTid(id2)
+    id1 = getRandAId(id2)
+    print('att', id1, id2, tid)
+
+def gen_dft():
+    id2 = getRandId()
+    tid = getRandTid(id2)
+    id1 = getRandAId(id2)
+    print('dft', id1, id2, tid)
+
+def gen_qtvs():
+    id = getRandId()
+    tid = getRandTid(id)
+    print('qtvs', id, tid)
+
+def gen_qtav():
+    id = getRandId()
+    tid = getRandTid(id)
+    print('qtav', id, tid)
+
+def gen_qba():
+    id = getRandId()
+    print('qba', id)
+
+def gen_qcs():
+    print('qcs')
+
+def gen_qsp():
+    id1 = getRandId()
+    id2 = getRandId()
+    print('qsp', id1, id2)
 
 def generate():
     load = 0
@@ -130,6 +224,25 @@ def generate():
             gen_qbs()
         if(op == 'qts'):
             gen_qts()
+
+        if(op == 'at'):
+            gen_at()
+        if(op == 'dt'):
+            gen_dt()
+        if(op == 'att'):
+            gen_att()
+        if(op == 'dft'):
+            gen_dft()
+        if(op == 'qtvs'):
+            gen_qtvs()
+        if(op == 'qtav'):
+            gen_qtav()
+        if(op == 'qba'):
+            gen_qba()
+        if(op == 'qcs'):
+            gen_qcs()
+        if(op == 'qsp'):
+            gen_qsp()    
 
 
 if __name__ == "__main__":

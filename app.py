@@ -1,3 +1,4 @@
+import threading
 import os, sys, json,time,zipstream
 from zipfile import ZIP_DEFLATED
 from markupsafe import escape
@@ -24,6 +25,7 @@ def load_user(user_id):
 
 
 login_manager.login_view = 'login'
+workplace_path = './static/workplace'
 
 
 @app.route('/')
@@ -241,6 +243,8 @@ def download():
 @login_required
 def update():
     username = current_user.username
+    if username == "testuser":
+        return "0"
     args_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/runargs.json"
     # print(username, "wants to update")
     json_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/result.json"
@@ -265,18 +269,32 @@ def update():
             total, json_data['all'],json_data['ac'],json_data['wa'],json_data['tle'],json_data['re'],json_data['uke']))
     else:
         return json.loads('{"code":"1","info":"%s"}'%("还未开始评测，请稍等"))
-
+    
+in_running = 0
+max_running = 0
+mutex = threading.Lock()
+runner_lock = threading.Condition()
+runner_capacity = 3
 @app.route('/start',methods=['POST'])
 @login_required
 def start():
+    global workplace_path
+    global in_running, max_running, mutex, runner_lock, runner_capacity 
     # if(current_user.is_started):
     #    return "0"
+    username = current_user.username
+
+    if username == "testuser":
+        return "0"
+
     current_user.is_started=1
     current_user.is_wrong = 0
     db.session.commit()
-    username = current_user.username
+
+    
     json_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/result.json"
     args_path = f"{app.config['WORKPLACE_FOLDER']}/users/{username}/runargs.json"
+    user_path = f"{workplace_path}/users/{username}"
 
     total = 0
     hwID = 0
@@ -284,7 +302,21 @@ def start():
         args_data = json.load(file)
         total = args_data['num_runs']
         hwID = args_data['hwID']
+    
+    os.system(f":>{user_path}/result.json")
+    with open(f"{user_path}/result.json", 'w') as file:
+        json.dump({'running':1,'all':0, 'ac':0, 'wa':0, 're':0, 'tle':0, 'uke':0}, file)
 
+    with runner_lock:
+        runner_lock.wait_for(lambda: in_running < runner_capacity)
+
+    mutex.acquire()
+    in_running += 1
+    if(in_running > max_running):
+        max_running = in_running
+    print("running:", in_running," max:", max_running)
+    mutex.release()
+    
     os.system(f"cd debug && python runner.py {username} {hwID}")
 
     got_wrong = False
@@ -302,6 +334,14 @@ def start():
     print("judge for",f"\033[1m\033[35m{current_user.username}\033[0m","finished",end="")
     current_user.is_started=0
     db.session.commit()
+
+    mutex.acquire()
+    in_running -= 1
+    if(in_running < runner_capacity):
+        with runner_lock:
+            runner_lock.notify()
+    mutex.release()
+
     if got_wrong:
         print(",\033[1m\033[31m got Wrong\033[0m")
     else:

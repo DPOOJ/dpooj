@@ -145,12 +145,8 @@ function Judge({logged}) {
     axios.post('/update')
       .then(res => {
         console.log('get result', res);
-        if(res.data.code == 1 && res.data.info == "还未开始评测，请稍等") {
-          message.warning("没有正在进行的评测")
-          return;
-        }
-        if(res.data.code == 1 && res.data.info == "还未开始评测，请稍等") {
-          message.warning("没有正在进行的评测")
+        if(res.data.code == 1) {
+          message.warning(res.data.info)
           return;
         }
         if((res.data.WA != 0 || res.data.TLE != 0 || res.data.RE != 0)) {
@@ -368,19 +364,19 @@ const ResultTable = ({resData}) => {
       dataIndex: 'download',
       render: (download) => <Button onClick={download}>下载数据</Button>
     },
-    {
-      title: 'show',
-      dataIndex: 'show',
-      render: (res) => {
-        const st = () => {
-          setShowData(res);
-          showDrawer();
-        }
-        return <>
-          <a onClick={st}>详细信息</a>
-        </>
-      }
-    },
+    // {
+    //   title: 'show',
+    //   dataIndex: 'show',
+    //   render: (res) => {
+    //     const st = () => {
+    //       setShowData(res);
+    //       showDrawer();
+    //     }
+    //     return <>
+    //       <a onClick={st}>详细信息</a>
+    //     </>
+    //   }
+    // },
   ];
   function downloadText(text, filename) {
     const content = text;
