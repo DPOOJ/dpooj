@@ -274,7 +274,7 @@ in_running = 0
 max_running = 0
 mutex = threading.Lock()
 runner_lock = threading.Condition()
-runner_capacity = 3
+runner_capacity = 4
 @app.route('/start',methods=['POST'])
 @login_required
 def start():

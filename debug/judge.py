@@ -1,6 +1,6 @@
 from judge_unit1 import judge1_wrap, judge2_wrap, judge3_wrap
 from judge_unit2 import judge_5, judge_6, judge_7
-from judge_unit3 import judge_9
+from judge_unit3 import judge_9, judge_10
 
 def judge(hw,*args):
     if hw == 1:
@@ -19,5 +19,7 @@ def judge(hw,*args):
     
     if hw == 9:
         return judge_9(*args)
+    if hw == 10:
+        return judge_10(*args)
 
 

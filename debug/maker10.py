@@ -1,15 +1,17 @@
 from random import randint, shuffle, uniform
+
+from sympy import per
 from utils import gen_arange
 
-DEBUG = 1
+DEBUG = 0
 
 MAX_LINE = 10000 if not DEBUG else 3000
 MAX_N = 100
 
 ops = {
-    'ap':0,
-    'ar':0,
-    'mr':100,
+    'ap':20,
+    'ar':20,
+    'mr':10,
     'qv':100, 
     'qci':50,
     'qbs':10,
@@ -18,7 +20,7 @@ ops = {
     'at':10,
     'dt':5,
     'att':100,
-    'dft':100,
+    'dft':20,
     'qtvs':10,
     'qtav':10,
     'qba':10,
@@ -125,12 +127,14 @@ def gen_ap():
         print('ap', p.id, p.name, p.age)
 
 def gen_ar():
+    global persons
     id1 = getRandId()
     id2 = getRandId()
     value = randint(1, 200)
     print('ar', id1, id2, value)
-    persons[id1].add(id2)
-    persons[id2].add(id1)
+    if id1 < len(persons) and id2 < len(persons):
+        persons[id1].add(id2)
+        persons[id2].add(id1)
 
 def gen_mr():
     id1 = getRandId()
@@ -203,7 +207,7 @@ def gen_qsp():
 
 def generate():
     load = 0
-    if randint(0, 100) < 2000:
+    if randint(0, 100) < 80:
         load = 1
         gen_load()
 
