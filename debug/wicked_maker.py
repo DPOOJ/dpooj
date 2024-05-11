@@ -3,7 +3,7 @@ from random import randint, shuffle, uniform
 from sympy import per
 from utils import gen_arange
 
-DEBUG = 0
+DEBUG = 1
 
 MAX_LINE = 10000 if not DEBUG else 3000
 MAX_N = 100

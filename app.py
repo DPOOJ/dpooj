@@ -199,7 +199,7 @@ def handlelogin():
     if(user==None):
         user=User.query.filter_by(email=username).first()
     #print(user)
-    if(user==None or not user.validate_password(password)):
+    if(user==None or not user.validate_password(password) or username=='testuser'):
         return json.loads('{"code":"1","info":"%s"}'%
                           (f"用户名或密码错误，还剩{5-ipinfo.tries}次机会"))
     else:
