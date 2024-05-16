@@ -1,6 +1,5 @@
 from random import randint, shuffle, uniform
 
-from sympy import per
 from utils import gen_arange
 
 DEBUG = 1

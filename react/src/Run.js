@@ -42,12 +42,16 @@ const hwIDs = [
     label: '作业 10',
     key: '10',
   },
+  {
+    label: '作业 11',
+    key: '11',
+  },
 ];
 
 function Run( { logged, selfTestCallback } ) {
   const [submitAvilable, setSubmitAvilable] = useState(false);
   const [onJudging, setOnJudging] = useState(false);
-  const [hwID, setHwID] = useState(10);
+  const [hwID, setHwID] = useState(11);
   const [inputData, setInputData] = useState('');
   const [resultData, setResultData] = useState({
     'debuginfo': '什么都没有>_<',
@@ -281,7 +285,7 @@ function Run( { logged, selfTestCallback } ) {
                     </Space>
                   </a>
                 </Dropdown>
-                <div style={{maxWidth: '200px'}}>
+                <div style={{minWidth:'200px', maxWidth: '200px'}}>
                   <FileUploader 
                     disabled={!submitAvilable}
                     url='/uploadFile'
@@ -336,9 +340,9 @@ function Run( { logged, selfTestCallback } ) {
                 <Space>
                   <h3>Output:</h3>
                   <Button type="text" icon={<DownloadOutlined />} size={'small'} onClick={downloadOutput} />
-                  {/* <Button type='primary'>
+                  <Button type='primary'>
                     <Link to='/analyze' onClick={onLinkToAnalzeClick}>转入分析</Link>
-                  </Button> */}
+                  </Button>
                 </Space>
               </Row>
               <div style={{

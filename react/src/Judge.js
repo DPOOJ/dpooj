@@ -41,6 +41,10 @@ const hwIDs = [
     label: '作业 10',
     key: '10',
   },
+  {
+    label: '作业 11',
+    key: '11',
+  },
 ];
 
 function Judge({logged}) {
@@ -57,7 +61,7 @@ function Judge({logged}) {
     'all' : 0,
     'running': false,
   })
-  const [hwID, setHwID] = useState(10);
+  const [hwID, setHwID] = useState(11);
   const [downloadInfo, setDownloadInfo] = useState([])
   const [intervalID, setIntervalID] = useState(null)
 
@@ -66,7 +70,7 @@ function Judge({logged}) {
       if(onJudging) {
         getResult()
       }
-    }, 2000);
+    }, 3000);
     return () => {
       clearInterval(id);
     }

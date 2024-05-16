@@ -272,14 +272,15 @@ def update():
     
 in_running = 0
 max_running = 0
+in_queue = 0
 mutex = threading.Lock()
 runner_lock = threading.Condition()
-runner_capacity = 4
+runner_capacity = 2
 @app.route('/start',methods=['POST'])
 @login_required
 def start():
     global workplace_path
-    global in_running, max_running, mutex, runner_lock, runner_capacity 
+    global in_running, max_running, mutex, runner_lock, runner_capacity, in_queue 
     # if(current_user.is_started):
     #    return "0"
     username = current_user.username
@@ -307,15 +308,21 @@ def start():
     with open(f"{user_path}/result.json", 'w') as file:
         json.dump({'running':1,'all':0, 'ac':0, 'wa':0, 're':0, 'tle':0, 'uke':0}, file)
 
+    with mutex:
+        in_queue +=1
+        print("in queue:", in_queue)
+
     with runner_lock:
         runner_lock.wait_for(lambda: in_running < runner_capacity)
 
-    mutex.acquire()
-    in_running += 1
-    if(in_running > max_running):
-        max_running = in_running
-    print("running:", in_running," max:", max_running)
-    mutex.release()
+    with mutex:
+        in_queue -=1
+    
+    with mutex:
+        in_running += 1
+        if(in_running > max_running):
+            max_running = in_running
+        print("running:", in_running," max:", max_running)
     
     os.system(f"cd debug && python runner.py {username} {hwID}")
 
@@ -335,12 +342,11 @@ def start():
     current_user.is_started=0
     db.session.commit()
 
-    mutex.acquire()
-    in_running -= 1
-    if(in_running < runner_capacity):
-        with runner_lock:
-            runner_lock.notify()
-    mutex.release()
+    with mutex:
+        in_running -= 1
+        if(in_running < runner_capacity):
+            with runner_lock:
+                runner_lock.notify()
 
     if got_wrong:
         print(",\033[1m\033[31m got Wrong\033[0m")
