@@ -41,7 +41,7 @@ class MyThrd(threading.Thread):
         # print(f"{self.thread_id} build")
     def run(self):
         username = self.username
-        hw = self.hw
+        hw = int(self.hw)
         while not chkFinish():
             my_count = getTask()
             if my_count == 0:
@@ -55,8 +55,9 @@ class MyThrd(threading.Thread):
 
             input_path = f"{workplace_path}/input/{username}/{my_count}.in"
             with file_lock:
-                os.system(f"touch {input_path}")   
-                os.system(f"python maker{hw}.py {user_path} > {input_path}")
+                os.system(f"touch {input_path}")
+                if hw <= 12:
+                    os.system(f"python maker{hw}.py {user_path} > {input_path}")
             
             userout_path = f"{user_path}/output/{my_count}.out"
             userlog_path = f"{user_path}/output/{my_count}.log"
@@ -69,7 +70,7 @@ class MyThrd(threading.Thread):
             is_wa = 0
             is_re = 0
             is_tle = 0
-            if int(user_ret)>>8 == 124: # timeout
+            if int(user_ret)>>8 == 124 or int(user_ret) == 124: # timeout
                 is_tle = 1
             elif int(user_ret) != 0:
                 is_re = 1
@@ -120,6 +121,8 @@ def stdRuncode(std_path, input_path, std_output_path, hw):
         return os.system(f"echo 'no std out for unit2' > {std_output_path}")
     elif hw <= 12:
         return os.system(f"timeout 20 java -jar {std_path}/code{hw}.jar < {input_path} > {std_output_path}")
+    elif hw <= 16:
+        return os.system(f"echo 'no std out for unit4' > {std_output_path}")
 
 def runcode(user_path, input_path, output_path, log_path, hw):
     with file_lock:
@@ -135,6 +138,8 @@ def runcode(user_path, input_path, output_path, log_path, hw):
         return os.system(f"{datainput_path} {input_path} 2>> {log_path} | timeout 120 java -jar {user_path}/code.jar > {output_path} 2>> {log_path}")
     elif hw <= 12:
         return os.system(f"timeout 10 java -jar {user_path}/code.jar < {input_path} > {output_path} 2> {log_path}")
+    elif hw <= 16:
+        return os.system(f"python maker{hw}.py '{user_path}/code.jar' '{input_path}' '{output_path}' '{log_path}'")
 
 
 def cleandir(name):
