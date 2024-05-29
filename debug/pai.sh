@@ -1,7 +1,7 @@
 target='21374067'
 while [ 1 ]
 do 
-    python wicked_maker.py > wicked1.txt && echo target: &&time java -jar ../static/workplace/users/$target/code.jar < wicked1.txt >acc.txt && echo cxc: &&time java -jar ../static/workplace/users/cxc/code.jar < wicked1.txt >stdout.txt && diff acc.txt stdout.txt
+    python maker13.py ../static/workplace/std/code13.jar ./stdin.txt ./stdout.txt ./stderr.txt && python judge_unit4.py ./stdin.txt ./stdout.txt ./stderr.txt
     if [ $? -ne 0 ]; then
         break
     fi

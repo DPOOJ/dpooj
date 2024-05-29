@@ -101,7 +101,8 @@ def startSelfTest():
                             user_st_in_path,
                             user_st_out_path,
                             user_st_log_path,
-                            hwID)
+                            hwID,
+                            1)
     
     std_ret = stdRuncode(std_path,
                             user_st_in_path,

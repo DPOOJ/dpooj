@@ -64,7 +64,7 @@ class MyThrd(threading.Thread):
             stdout_path = f"{std_path}/output/{username}/{my_count}.out"
 
             std_ret = stdRuncode(std_path, input_path, stdout_path, hw)
-            user_ret = runcode(user_path, input_path, userout_path, userlog_path, hw)
+            user_ret = runcode(user_path, input_path, userout_path, userlog_path, hw, 0)
             
             is_wrong = 0
             is_wa = 0
@@ -124,7 +124,7 @@ def stdRuncode(std_path, input_path, std_output_path, hw):
     elif hw <= 16:
         return os.system(f"echo 'no std out for unit4' > {std_output_path}")
 
-def runcode(user_path, input_path, output_path, log_path, hw):
+def runcode(user_path, input_path, output_path, log_path, hw, is_self_test):
     with file_lock:
         os.system(f"touch {output_path}")
     if hw <= 4:
@@ -139,7 +139,14 @@ def runcode(user_path, input_path, output_path, log_path, hw):
     elif hw <= 12:
         return os.system(f"timeout 10 java -jar {user_path}/code.jar < {input_path} > {output_path} 2> {log_path}")
     elif hw <= 16:
-        return os.system(f"python maker{hw}.py '{user_path}/code.jar' '{input_path}' '{output_path}' '{log_path}'")
+        cdir = os.path.abspath('.')
+        if cdir.split('/')[-1] != 'debug':
+            cdir = os.path.join(cdir,'debug')
+        maker_path = os.path.join(cdir,f"maker{hw}.py")
+        if not is_self_test:
+            return os.system(f"python {maker_path} '{user_path}/code.jar' '{input_path}' '{output_path}' '{log_path}'")
+        else:
+            return os.system(f"timeout 5 java -jar {user_path}/code.jar < {input_path} > {output_path} 2> {log_path}")
 
 
 def cleandir(name):

@@ -1,376 +1,370 @@
-from random import randint, shuffle, uniform
+from datetime import date, timedelta
+import os
+from random import randint
+import subprocess
+import sys
+from typing import List
 
 from utils import gen_arange
 
-DEBUG = 1
+MAX_N = 10
+MAX_P = 5
+MAX_LINE = 190
 
-MAX_LINE = 10000 if not DEBUG else 3000
-MAX_N = 100
+uni_ids = gen_arange(9999)
 
+def gen_type():
+    r = randint(0,100)
+    if r < 20:
+        return "A"
+    elif r < 60:
+        return "B"
+    return "C"
+
+def gen_uid():
+    global uni_ids
+    id = uni_ids.pop(randint(0, len(uni_ids) - 1))
+    return str('%.4d' % id)
+
+class Book():
+    def __init__(self, type, uid) -> None:
+        self.type = type
+        self.uid = str(uid)
+    def get_id(self):
+        return self.type + "-" + self.uid
+
+    def to_string(self):
+        return self.type + "-" + self.uid
+    
+class Person():
+    def __init__(self, id) -> None:
+        self.id = str(id)
+        self.held = []
+        self.ordered = []
+    def get_id(self):
+        return str(self.id)
+
+init_n = -1
+line_num = 0
+need_output = 0
+need_input = 1
+all_books = []
+bs = []
+bro = []
+ao = []
+global_date = date(2024, 1, 1)
+lib_open = 0
+all_persons = []
+num_persons = 0
+moves_remain = -1
+last_op = ''
 ops = {
-    'ap':10,
-    'ar':50,
-    'mr':10,
-    'qv':0, 
-    'qci':0,
-    'qbs':0,
-    'qts':0,
-
-    'at':10,
-    'dt':0,
-    'att':20,
-    'dft':0,
-    'qtvs':0,
-    'qtav':0,
-    'qba':0,
-    'qcs':0,
-    'qsp':0,
-
-    'am':50,
-    'sm':100,
-    'qsv':50,
-    'qrm':100,
-    'aerm':100,
-    'anm':50,
-    'cn':2,
-    'aem':100,
-    'sei':10,
-    'qp':50,
-    'dce':1,
-    'qm':100
+    'queried':100,
+    'borrowed':100,
+    'ordered':100,
+    'returned':100, 
+    'picked':100, 
+    'close':200
 }
 sum = [0]
-
-def r_include():
-    return randint(0, 100) > 0
 
 def init_sum():
     global ops, sum
     for share in ops.values():
         sum.append(sum[-1] + share)
 
-class Person():
-    def __init__(self, id, name, age) -> None:
-        self.id = id
-        self.name = name
-        self.age = age
-        self.tags = []
-        self.records = []
-    
-    def add(self, id2):
-        if id2 not in self.records:
-            self.records.append(id2)
+def genOpAndBookId(sid:str) -> str:
+    person = get_person(sid)
+    tmp_ops:dict = ops.copy()
+    if len(person.held) == 0:
+        tmp_ops.pop('returned')
+    if len(person.ordered) == 0:
+        tmp_ops.pop('picked')
 
-persons = []
-n = 0
-m = 0
-mi = 0
-eids = []
+    tmp_sum = [0]
+    for share in tmp_ops.values():
+        tmp_sum.append(tmp_sum[-1] + share)
 
-def next_mid():
-    global m
-    m += 1
-    return m - 1
+    op_out = ""
+    bookId = ""
+    num = randint(0, tmp_sum[-1] - 1)
+    for i, op in enumerate(tmp_ops.keys()):
+        if(num < tmp_sum[i + 1]):
+            op_out = op
+            break
 
-def next_smid():
-    global mi,m
-    if(mi < m):
-        mi += 1
-        return mi - 1
-    return mi
-
-def next_eid():
-    eids.append(len(eids))
-    return eids[-1]
-
-def gen_load():
-    global persons, n
-    n = MAX_N
-    print('ln',n)
-
-    ids = gen_arange(n)
-    shuffle(ids)
-    names = []
-    ages = []
-    for id in ids:
-        name = f"DPO-bot-{id}"
-        age = randint(1, 200)
-        persons.append(Person(id, name, age))
-        names.append(name)
-        ages.append(age)
-
-    print(*ids)
-    print(*names)
-    print(*ages)
-
-    for i in range(1, n):
-        values = []
-        for j in range(i):
-            values.append(randint(1, 1))
-        print(*values)
-
-def genOp() -> str:
-    global sum, ops
-    num = randint(0, sum[-1] - 1)
-    for i, op in enumerate(ops.keys()):
-        if(num < sum[i + 1]):
-            return op
-
-def getRandId():
-    global persons, n
-    if n > 0:
-        return persons[randint(0, n - 1)].id if r_include() else n + randint(1, n)
+    if op_out == "returned":
+        bookId = gen_bookId_from(person.held)
+    elif op_out == "picked":
+        bookId = gen_bookId_from(person.ordered)
     else:
-        return randint(1, MAX_N)
+        bookId = gen_bookId()
 
-def getRandTid(pid):
-    global persons
-    if len(persons) > pid:
-        person: Person = persons[pid]
-        tn = len(person.tags)
-        if tn > 0 and r_include():
-            return person.tags[randint(0, tn - 1)]
-        else:
-            return tn + 1
-    else:
-        return randint(1, MAX_N)
-
-def getRandAid(pid):
-    global persons, n
-    if len(persons) > pid and n > 0:
-        an = len(persons[pid].records)
-        if an > 0 and r_include():
-            return persons[pid].records[randint(0, an - 1)]
-        return an + 1
-    else:
-        return n + 1
-
-def gen_ap():
-    global persons, n
-    if randint(0,100) > 50 or n <= 0:
-        n += 1
-        name = f"DPO-bot-{n}"
-        age = randint(1, 200)
-        persons.append(Person(n, name, age))
-        print('ap', n, name, age)
-    else:
-        p: Person = persons[randint(0, n - 1)]
-        print('ap', p.id, p.name, p.age)
-
-def gen_ar():
-    global persons
-    id1 = getRandId()
-    id2 = getRandId()
-    value = randint(1, 200)
-    print('ar', id1, id2, value)
-    if id1 < len(persons) and id2 < len(persons):
-        persons[id1].add(id2)
-        persons[id2].add(id1)
-
-def gen_mr():
-    id1 = getRandId()
-    id2 = getRandId()
-    m_val = randint(-200, 0)
-    print('mr', id1, id2, m_val)
-
-def gen_qv():
-    id1 = getRandId()
-    id2 = getRandId()
-    print('qv', id1, id2)
-
-def gen_qci():
-    id1 = getRandId()
-    id2 = getRandId()
-    print('qci', id1, id2)
-
-def gen_qbs():
-    print('qbs')
-
-def gen_qts():
-    print('qts')
-
-def gen_at():
-    global persons
-    id = getRandId()
-    tid = getRandTid(id)
-    if len(persons) > id:
-        persons[id].tags.append(tid)
-    print('at', id, tid)
-
-def gen_dt():
-    id = getRandId()
-    tid = getRandTid(id)
-    print('dt', id, tid)
-
-def gen_att():
-    id2 = getRandId()
-    tid = getRandTid(id2)
-    id1 = getRandAid(id2)
-    print('att', id1, id2, tid)
-
-def gen_dft():
-    id2 = getRandId()
-    tid = getRandTid(id2)
-    id1 = getRandAid(id2)
-    print('dft', id1, id2, tid)
-
-def gen_qtvs():
-    id = getRandId()
-    tid = getRandTid(id)
-    print('qtvs', id, tid)
-
-def gen_qtav():
-    id = getRandId()
-    tid = getRandTid(id)
-    print('qtav', id, tid)
-
-def gen_qba():
-    id = getRandId()
-    print('qba', id)
-
-def gen_qcs():
-    print('qcs')
-
-def gen_qsp():
-    id1 = getRandId()
-    id2 = getRandId()
-    print('qsp', id1, id2)
-
-def gen_social_value():
-    return randint(-1000, 1000)
-
-def gen_money():
-    return randint(0, 200)
-
-def genRandEid():
-    global eids
-    if len(eids) == 0:
-        return 0
-    return eids[randint(0, len(eids) - 1)]
-
-def gen_notice():
-    return str("homo-"+ str(randint(0, 114514)))
-
-def gen_m(m_type:str):
-    id = next_mid()
-    if m_type == 'am':
-        value = gen_social_value()
-    elif m_type == 'arem':
-        value = gen_money()
-    elif m_type == 'aem':
-        value = genRandEid()
-    elif m_type == 'anm':
-        value = gen_notice()
-    type = int(randint(0, 100) > 98)
-    id1 = getRandId()
-    if type == 0:
-        id2 = getRandAid(id1)
-    else:
-        id2 = getRandTid(id1)
-    print(m_type, id, value, type, id1, id2)
-
-def gen_sm():
-    id = next_smid()
-    print('sm', id)
-
-def gen_qsv():
-    id = getRandId()
-    print('qsv', id)
-
-def gen_qrm():
-    id = getRandId()
-    print('qrm', id)
-
-def gen_cn():
-    id = getRandId()
-    print('cn', id)
-
-def gen_sei():
-    id = next_eid()
-    print('sei', id)
-
-def gen_qp():
-    id = genRandEid()
-    print('qp', id)
-
-def gen_dce():
-    limit = randint(0, 5)
-    print('dce', limit)
-
-def gen_qm():
-    id = getRandId()
-    print('qm', id)
-
-def generate():
-    load = 0
-    if randint(0, 100) < 80:
-        load = 1
-        gen_load()
-
-    num_lines = MAX_LINE - load
-    for i in range(num_lines):
-        op = genOp()
-        if(op == 'ap'):
-            gen_ap()
-        if(op == 'ar'):
-            gen_ar()
-        if(op == 'mr'):
-            gen_mr()
-        if(op == 'qv'):
-            gen_qv()
-        if(op == 'qci'):
-            gen_qci()
-        if(op == 'qbs'):
-            gen_qbs()
-        if(op == 'qts'):
-            gen_qts()
-
-        if(op == 'at'):
-            gen_at()
-        if(op == 'dt'):
-            gen_dt()
-        if(op == 'att'):
-            gen_att()
-        if(op == 'dft'):
-            gen_dft()
-        if(op == 'qtvs'):
-            gen_qtvs()
-        if(op == 'qtav'):
-            gen_qtav()
-        if(op == 'qba'):
-            gen_qba()
-        if(op == 'qcs'):
-            gen_qcs()
-        if(op == 'qsp'):
-            gen_qsp()   
-
-        if(op == 'am'):
-            gen_m(op)
-        if(op == 'sm'):
-            gen_sm()
-        if(op == 'qsv'):
-            gen_qsv()
-        if(op == 'qrm'):
-            gen_qrm()
-        if(op == 'arem'):
-            gen_m(op)
-        if(op == 'anm'):
-            gen_m(op)
-        if(op == 'cn'):
-            gen_cn()
-        if(op == 'aem'):
-            gen_m(op)
-        if(op == 'sei'):
-            gen_sei()   
-        if(op == 'qp'):
-            gen_qp()
-        if(op == 'dce'):
-            gen_dce()
-        if(op == 'qm'):
-            gen_qm()
+    return op_out, bookId
         
+def remove_book(list:List, bookId:str):
+    for book in list:
+        if book.get_id() == bookId:
+            list.remove(book)
+            return book
+    return None
+
+def add_book(list:List, bookId:str):
+    [btype, uid] = bookId.split('-')
+    new_book = Book(btype, uid)
+    list.append(new_book)
+
+def get_person(sid:str) -> Person:
+    global all_persons
+    for person in all_persons:
+        if person.id == sid:
+            return person
+    return None
+
+def have_person(person:Person):
+    global all_persons
+    for q in all_persons:
+        if q.get_id() == person.get_id():
+            return True
+    return False 
+
+def init_persons():
+    global all_persons, num_persons
+    num_persons = randint(1, MAX_P)
+    for i in range(num_persons):
+        person = Person(str(22370000+randint(1,200)))
+        while have_person(person):
+            person = Person(str(22370000+randint(1,200)))
+        all_persons.append(person)
+
+def gen_bookId():
+    return all_books[randint(0, len(all_books)-1)].get_id()
+
+def gen_bookId_from(list:List):
+    return list[randint(0, len(list)-1)].get_id()
+
+def gen_studentId():
+    return all_persons[randint(0, len(all_persons)-1)].get_id()
+
+def gen_cmd(sid, op, bookId):
+    global global_date
+    return f'[{global_date}] {sid} {op} {bookId}'
+
+def gen_open():
+    global global_date
+    global_date = global_date + timedelta(days=randint(1,5))
+    return f'[{global_date}] OPEN'
+
+def gen_close():
+    global global_date
+    return f'[{global_date}] CLOSE'
+
+def getNextInput() -> str:
+    global init_n, global_date, lib_open, need_output, line_num, last_op
+    global bs, bro, ao
+    line_num -= 1
+    if init_n == -1:
+        init_n = randint(1, MAX_N)
+        need_output = 0
+        return str(init_n)
+    elif init_n > 0:
+        init_n -= 1
+        need_output = 0
+        num = randint(1, 10)
+        btype = gen_type()
+        uid = gen_uid()
+        for i in range(num):
+            book = Book(btype, uid)
+            all_books.append(book)
+            bs.append(book)
+        return book.to_string()+" "+str(num)
+    
+    if not lib_open:
+        need_output = 1
+        lib_open = 1
+        last_op = "open"
+        return gen_open()
+    
+    sid = gen_studentId()
+    op, bookId = genOpAndBookId(sid)
+    last_op = op
+    if  op == "close":
+        need_output = 1
+        lib_open = 0
+        return gen_close()
+    else:
+        need_output = 1
+        return gen_cmd(sid, op, bookId)
+    
+
+def parse_output(output:str):
+    global last_op, need_input, moves_remain
+    # print("op:",last_op, "O", output)
+    if last_op == "queried":
+        need_input = 1
+        return
+    if(last_op == "open" or last_op == "close"):
+        if moves_remain == -1:
+            moves_remain = int(output)
+            if moves_remain == 0:
+                moves_remain = -1
+                need_input = 1
+                return
+            need_input = 0
+            return
+        moves_remain -= 1
+        if moves_remain > 0:
+            need_input = 0
+        else:
+            need_input = 1
+            moves_remain = -1
+            return
+        values = output.split(" ")
+        date = values[0]
+        bookId = values[2]
+        from_ = values[4]
+        to = values[6]
+        if len(values) > 8:
+            sid = values[8]
+        else:
+            sid = ""
+        if from_ == "bs":
+            remove_book(bs, bookId)
+        elif from_ == "bro":
+            remove_book(bro, bookId)
+        elif from_ == "ao":
+            remove_book(ao, bookId)
+
+        if to == "bs":
+            add_book(bs, bookId)
+        elif to == "bro":
+            add_book(bro, bookId)
+        elif to == "ao":
+            add_book(ao, bookId)
+
+    else:
+        need_input = 1
+        values = output.split(" ")
+        date = values[0]
+        result = values[1]
+        sid = values[2]
+        op_str = values[3]
+        bookId = values[4]
+        # print("values:",date,result, sid, op_str, bookId)
+        person = get_person(sid)
+        if last_op == "borrowed":
+            if result == "[accept]":
+                remove_book(bs, bookId)
+                add_book(person.held, bookId)
+            else:
+                remove_book(bs, bookId)
+                add_book(bro, bookId)
+        elif last_op == "ordered":
+            if result == "[accept]":
+                add_book(person.ordered, bookId)
+            else:
+                return
+        elif last_op == "returned":
+            if result == "[accept]":
+                remove_book(person.held, bookId)
+                add_book(bro, bookId)
+            else:
+                return
+        elif last_op == "picked":
+            if result == "[accept]":
+                remove_book(ao, bookId)
+                remove_book(person.ordered, bookId)
+                add_book(person.held, bookId)
+            else:
+                return
+
+def interact(process: subprocess.Popen, input_path, output_path, log_path):
+    global init_n, need_output, line_num, need_input,last_op
+    input_lines = []
+    output_lines = []
+    line_num = randint(10, MAX_LINE)
+    init_sum()
+    init_persons()
+    
+    while line_num > 0 or init_n > 0 or lib_open or need_input == 0:
+        if need_input:
+            input_line = getNextInput()
+            try:
+                process.stdin.write(input_line + "\n")
+                process.stdin.flush()
+            except BrokenPipeError as e:
+                pass
+            input_lines.append(input_line + "\n")
+            # print("I",input_line)
+
+        if need_output:
+            output = process.stdout.readline().strip()
+            # if output == '' and process.poll() is not None:
+            #     break
+            if output:
+                try:
+                    parse_output(output)
+                except Exception as e:
+                    #output_lines.append("the line below has a format error\n")
+                    break
+                finally:
+                    output_lines.append(output + "\n")
+        
+    # # close at end
+    # if lib_open:
+    #     input_line = gen_close()
+    #     last_op = "close"
+    #     try:
+    #         process.stdin.write(input_line + "\n")
+    #         process.stdin.flush()
+    #     except BrokenPipeError as e:
+    #         pass
+    #     input_lines.append(input_line + "\n")
+    #     print(input_line)
+    #     output = process.stdout.readline().strip()
+    #     print("last:",output, "last op:",last_op)
+    #     if output:
+    #         parse_output(output)
+    #         output_lines.append(output + "\n")
+
+    try:
+        process.stdin.close()
+    except BrokenPipeError as e:
+        pass
+    return_code = process.wait()
+
+    stderr = process.stderr.read()
+    with open(log_path,"w") as log_file:
+        log_file.write(stderr)
+    
+    with open(input_path, "w") as input_file:
+        input_file.writelines(input_lines)
+    
+    with open(output_path, "w") as output_file:
+        output_file.writelines(output_lines)
+
+    
+    return return_code
 
 
 if __name__ == "__main__":
-    init_sum()
-    generate()
+    jar_path = sys.argv[1]
+    input_path = sys.argv[2]
+    output_path = sys.argv[3]
+    log_path = sys.argv[4]
+        
+    process = subprocess.Popen(
+        ['timeout', '5', 'java', '-jar', jar_path],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        bufsize=1
+    )
+    return_code = interact(process, input_path, output_path, log_path)
+
+    # print("ret:", return_code)
+    sys.exit(return_code)
+    
+
+    

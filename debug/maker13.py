@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import os
 from random import randint
 import subprocess
 import sys
@@ -26,21 +27,20 @@ def gen_uid():
     return str('%.4d' % id)
 
 class Book():
-    def __init__(self, type, uid, num) -> None:
+    def __init__(self, type, uid) -> None:
         self.type = type
         self.uid = str(uid)
-        self.num = num
     def get_id(self):
         return self.type + "-" + self.uid
 
     def to_string(self):
-        return self.type + "-" + self.uid + " " + str(self.num)
+        return self.type + "-" + self.uid
     
 class Person():
     def __init__(self, id) -> None:
         self.id = str(id)
         self.held = []
-        self.booked = []
+        self.ordered = []
     def get_id(self):
         return str(self.id)
 
@@ -78,7 +78,7 @@ def genOpAndBookId(sid:str) -> str:
     tmp_ops:dict = ops.copy()
     if len(person.held) == 0:
         tmp_ops.pop('returned')
-    if len(person.booked) == 0:
+    if len(person.ordered) == 0:
         tmp_ops.pop('picked')
 
     tmp_sum = [0]
@@ -96,7 +96,7 @@ def genOpAndBookId(sid:str) -> str:
     if op_out == "returned":
         bookId = gen_bookId_from(person.held)
     elif op_out == "picked":
-        bookId = gen_bookId_from(person.booked)
+        bookId = gen_bookId_from(person.ordered)
     else:
         bookId = gen_bookId()
 
@@ -105,20 +105,13 @@ def genOpAndBookId(sid:str) -> str:
 def remove_book(list:List, bookId:str):
     for book in list:
         if book.get_id() == bookId:
-            if book.num > 1:
-                book.num -= 1
-            else:
-                list.remove(book)
+            list.remove(book)
             return book
     return None
 
 def add_book(list:List, bookId:str):
     [btype, uid] = bookId.split('-')
-    new_book = Book(btype, uid, 1)
-    for book in list:
-        if book.get_id() == new_book.get_id():
-            book.num += 1
-            return
+    new_book = Book(btype, uid)
     list.append(new_book)
 
 def get_person(sid:str) -> Person:
@@ -128,11 +121,20 @@ def get_person(sid:str) -> Person:
             return person
     return None
 
+def have_person(person:Person):
+    global all_persons
+    for q in all_persons:
+        if q.get_id() == person.get_id():
+            return True
+    return False 
+
 def init_persons():
     global all_persons, num_persons
     num_persons = randint(1, MAX_P)
     for i in range(num_persons):
-        person = Person(str("%.8d" % randint(0, 1e8 - 1)))
+        person = Person(str(22370000+randint(1,200)))
+        while have_person(person):
+            person = Person(str(22370000+randint(1,200)))
         all_persons.append(person)
 
 def gen_bookId():
@@ -168,10 +170,14 @@ def getNextInput() -> str:
     elif init_n > 0:
         init_n -= 1
         need_output = 0
-        book = Book(gen_type(), gen_uid(), randint(1, 10))
-        all_books.append(book)
-        bs.append(book)
-        return book.to_string()
+        num = randint(1, 10)
+        btype = gen_type()
+        uid = gen_uid()
+        for i in range(num):
+            book = Book(btype, uid)
+            all_books.append(book)
+            bs.append(book)
+        return book.to_string()+" "+str(num)
     
     if not lib_open:
         need_output = 1
@@ -193,7 +199,7 @@ def getNextInput() -> str:
 
 def parse_output(output:str):
     global last_op, need_input, moves_remain
-    print(output)
+    # print("op:",last_op, "O", output)
     if last_op == "queried":
         need_input = 1
         return
@@ -238,7 +244,6 @@ def parse_output(output:str):
 
     else:
         need_input = 1
-        # print("last:",last_op)
         values = output.split(" ")
         date = values[0]
         result = values[1]
@@ -256,7 +261,7 @@ def parse_output(output:str):
                 add_book(bro, bookId)
         elif last_op == "ordered":
             if result == "[accept]":
-                add_book(person.booked, bookId)
+                add_book(person.ordered, bookId)
             else:
                 return
         elif last_op == "returned":
@@ -268,47 +273,42 @@ def parse_output(output:str):
         elif last_op == "picked":
             if result == "[accept]":
                 remove_book(ao, bookId)
-                remove_book(person.booked, bookId)
+                remove_book(person.ordered, bookId)
                 add_book(person.held, bookId)
             else:
                 return
 
 def interact(process: subprocess.Popen, input_path, output_path, log_path):
-    global init_n, need_output, line_num, need_input
+    global init_n, need_output, line_num, need_input,last_op
     input_lines = []
     output_lines = []
-    line_num = randint(10, 200)
+    line_num = randint(10, MAX_LINE)
     init_sum()
     init_persons()
     
-    while line_num > 0 or init_n > 0:
-        if need_output:
-            output = process.stdout.readline().strip()
-            if output == '' and process.poll() is not None:
-                break
-            if output:
-                parse_output(output)
-                output_lines.append(output + "\n")
-        
+    while line_num > 0 or init_n > 0 or lib_open or need_input == 0:
         if need_input:
             input_line = getNextInput()
             try:
                 process.stdin.write(input_line + "\n")
                 process.stdin.flush()
             except BrokenPipeError as e:
-                break
+                pass
             input_lines.append(input_line + "\n")
-            print(input_line)
-    
-    if lib_open:
-        input_line = gen_close()
-        try:
-            process.stdin.write(input_line + "\n")
-            process.stdin.flush()
-        except BrokenPipeError as e:
-            pass
-        input_lines.append(input_line + "\n")
-        print(input_line)
+            # print("I",input_line)
+
+        if need_output:
+            output = process.stdout.readline().strip()
+            # if output == '' and process.poll() is not None:
+            #     break
+            if output:
+                try:
+                    parse_output(output)
+                except Exception as e:
+                    #output_lines.append("the line below has a format error\n")
+                    break
+                finally:
+                    output_lines.append(output + "\n")
 
     try:
         process.stdin.close()
@@ -335,7 +335,6 @@ if __name__ == "__main__":
     input_path = sys.argv[2]
     output_path = sys.argv[3]
     log_path = sys.argv[4]
-
         
     process = subprocess.Popen(
         ['timeout', '5', 'java', '-jar', jar_path],
@@ -347,7 +346,7 @@ if __name__ == "__main__":
     )
     return_code = interact(process, input_path, output_path, log_path)
 
-    print("ret:", return_code)
+    # print("ret:", return_code)
     sys.exit(return_code)
     
 
