@@ -7,8 +7,8 @@ from typing import List
 
 from utils import gen_arange
 
-MAX_N = 1
-MAX_P = 1
+MAX_N = 10
+MAX_P = 5
 MAX_LINE = 190
 
 uni_ids = gen_arange(9999)
@@ -271,10 +271,7 @@ def parse_output(output:str):
         elif to == "ao":
             add_book(ao, bookId)
         elif to == "bdc":
-            add_book(bdc, bookId)   
-
-        
-            
+            add_book(bdc, bookId)      
 
     else:
         need_input = 1
@@ -296,9 +293,7 @@ def parse_output(output:str):
                 return
         elif last_op == "returned":
             if result == "[accept]":
-                b = remove_book(person.held, bookId)
-                if b is None:
-                    print("wtf?!", bookId)
+                remove_book(person.held, bookId)
                 add_book(bro, bookId)
                 if not is_formal(bookId):
                     b_count[bookId] += 1 

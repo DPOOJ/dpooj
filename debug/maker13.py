@@ -212,13 +212,13 @@ def parse_output(output:str):
                 return
             need_input = 0
             return
-        moves_remain -= 1
         if moves_remain > 0:
             need_input = 0
-        else:
+            moves_remain -= 1
+        if moves_remain == 0:
             need_input = 1
             moves_remain = -1
-            return
+            
         values = output.split(" ")
         date = values[0]
         bookId = values[2]

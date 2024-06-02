@@ -50,12 +50,16 @@ const hwIDs = [
     label: '作业 13',
     key: '13',
   },
+  {
+    label: '作业 14',
+    key: '14',
+  },
 ];
 
 function Run( { logged, selfTestCallback } ) {
   const [submitAvilable, setSubmitAvilable] = useState(false);
   const [onJudging, setOnJudging] = useState(false);
-  const [hwID, setHwID] = useState(13);
+  const [hwID, setHwID] = useState(14);
   const [inputData, setInputData] = useState('');
   const [resultData, setResultData] = useState({
     'debuginfo': '什么都没有>_<',

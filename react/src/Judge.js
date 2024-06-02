@@ -49,6 +49,10 @@ const hwIDs = [
     label: '作业 13',
     key: '13',
   },
+  {
+    label: '作业 14',
+    key: '14',
+  },
 ];
 
 function Judge({logged}) {
@@ -65,7 +69,7 @@ function Judge({logged}) {
     'all' : 0,
     'running': false,
   })
-  const [hwID, setHwID] = useState(13);
+  const [hwID, setHwID] = useState(14);
   const [downloadInfo, setDownloadInfo] = useState([])
   const [intervalID, setIntervalID] = useState(null)
 
