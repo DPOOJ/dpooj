@@ -16,3 +16,4 @@ __pycache__/*.pyc
 *.log
 *.pyc
 *.txt
+debug/pai.sh
