@@ -77,7 +77,7 @@ def uploadFile():
             os.system(f"mkdir {user_path}/output/")
             os.system(f"mkdir {user_path}/wrongdata/")
         f.save(os.path.join(user_path, "code.jar"))
-        print(f"\033[1m\033[35m{username}\033[0m uploaded {f.filename} as code.jar in{user_path}")
+        print(f"\033[1m\033[35m{username}\033[0m uploaded {f.filename} as code.jar in {user_path}")
         current_user.is_uploaded = 1
         current_user.is_wrong = 0
         db.session.commit()

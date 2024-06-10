@@ -42,6 +42,7 @@ class Person():
         self.held = []
         self.ordered = []
         self.credit = 10
+        self.can_renew = []
     def get_id(self):
         return str(self.id)
 
@@ -62,11 +63,11 @@ num_persons = 0
 moves_remain = -1
 last_op = ''
 ops = {
-    'queried':100,
+    'queried':200,
     'borrowed':100,
-    'ordered':100,
+    'ordered':80,
     'returned':100, 
-    'picked':100, 
+    'picked':200, 
     'renewed':100,
     'donated':50,
     'close':200,
@@ -83,6 +84,7 @@ def genOpAndBookId(sid:str) -> str:
     tmp_ops:dict = ops.copy()
     if len(person.held) == 0:
         tmp_ops.pop('returned')
+    if len(person.can_renew) == 0:
         tmp_ops.pop('renewed')
     if len(person.ordered) == 0:
         tmp_ops.pop('picked')
@@ -99,8 +101,11 @@ def genOpAndBookId(sid:str) -> str:
             op_out = op
             break
 
-    if op_out == "returned" or op_out == "renewed":
+    if op_out == "returned":
         bookId = gen_bookId_from(person.held)
+    elif op_out == "renewed":
+        bookId = gen_bookId_from(person.can_renew)
+        remove_book(person.can_renew, bookId)
     elif op_out == "picked":
         bookId = gen_bookId_from(person.ordered)
     elif op_out == "donated":
@@ -288,6 +293,7 @@ def parse_output(output:str):
             if result == "[accept]":
                 remove_book(bs, bookId)
                 add_book(person.held, bookId)
+                add_book(person.can_renew, bookId)
             else:
                 remove_book(bs, bookId)
                 add_book(bro, bookId)
@@ -299,6 +305,7 @@ def parse_output(output:str):
         elif last_op == "returned":
             if result == "[accept]":
                 remove_book(person.held, bookId)
+                remove_book(person.can_renew, bookId)
                 add_book(bro, bookId)
                 if not is_formal(bookId):
                     b_count[bookId] += 1 
@@ -309,6 +316,7 @@ def parse_output(output:str):
                 remove_book(ao, bookId)
                 remove_book(person.ordered, bookId)
                 add_book(person.held, bookId)
+                add_book(person.can_renew, bookId)
             else:
                 return
         elif last_op == "renewed":

@@ -53,6 +53,10 @@ const hwIDs = [
     label: '作业 14',
     key: '14',
   },
+  {
+    label: '作业 15',
+    key: '15',
+  },
 ];
 
 function Judge({logged}) {
@@ -69,7 +73,7 @@ function Judge({logged}) {
     'all' : 0,
     'running': false,
   })
-  const [hwID, setHwID] = useState(14);
+  const [hwID, setHwID] = useState(15);
   const [downloadInfo, setDownloadInfo] = useState([])
   const [intervalID, setIntervalID] = useState(null)
 
@@ -282,7 +286,7 @@ function Judge({logged}) {
               <span>评测组数：{judgeTimes}</span>
               <Slider 
                 min={0}
-                max={20}
+                max={2024}
                 step={5}
                 defaultValue={judgeTimes}
                 onChange={onJudgeTimeSliderChange}
